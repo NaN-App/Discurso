@@ -45,7 +45,7 @@
             flex-direction: column;
         }
 
-        /* --- CABEÇALHO GLOBAL (FIXO NO TOPO DO APP) --- */
+        /* --- CABEÇALHO GLOBAL --- */
         .app-header {
             background-color: var(--bg-header);
             padding: 24px 20px 24px 20px;
@@ -67,7 +67,6 @@
             gap: 20px;
         }
 
-        /* Título Principal Ajustado e Centralizado */
         .titulo-principal {
             font-size: 30px;
             font-weight: 600;
@@ -82,7 +81,6 @@
             width: 100%;
         }
 
-        /* Carrossel de Semanas */
         .carousel-semanas {
             display: flex;
             gap: 12px;
@@ -96,7 +94,6 @@
             display: none;
         }
 
-        /* Design de Card Vertical Compacto */
         .semana-card {
             flex: 0 0 105px;
             background: transparent;
@@ -112,36 +109,11 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .semana-card .data-linha {
-            font-size: 17px;
-            font-weight: 500;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.85);
-            white-space: nowrap;
-        }
-
-        .semana-card .data-separador {
-            font-size: 12px;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.4);
-            text-transform: lowercase;
-        }
-
         .semana-card.ativa {
             background-color: var(--card-white);
             border-color: var(--card-white);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             transform: translateY(-2px);
-        }
-
-        .semana-card.ativa .data-linha {
-            color: #08394E;
-            font-weight: 700;
-        }
-
-        .semana-card.ativa .data-separador {
-            color: #8E8E93;
-            font-weight: 500;
         }
 
         /* --- CONTAINER DE CONTEÚDO --- */
@@ -163,7 +135,6 @@
             overflow-y: auto;
         }
 
-        /* --- CONTEÚDO INFERIOR (FUNDO CLARO) --- */
         .bottom-sheet {
             background-color: var(--bg-bottom-sheet);
             padding: 15px 13px 30px 13px;
@@ -197,10 +168,6 @@
             transition: transform 0.2s ease;
         }
 
-        .card-funcao:hover {
-            transform: translateY(-2px);
-        }
-
         .funcao-titulo {
             font-size: 19px;
             font-weight: 700;
@@ -208,7 +175,6 @@
             align-self: flex-start;
         }
 
-        /* Estilização Base Limpa para Inputs e Textareas do Card */
         .input-card {
             background: transparent;
             border: none;
@@ -240,7 +206,6 @@
     </script>
 </head>
 <body>
-     <!-- HEADER ÚNICO E GLOBAL NO TOPO -->
     <header class="app-header">
         <div class="header-content">
             <h1 class="titulo-principal" id="app-titulo">Designação de Discurso Público</h1>
@@ -250,18 +215,15 @@
         </div>
     </header>
 
-    <!-- CONTAINER DA PÁGINA FIXA -->
     <div class="app-carousel-viewport">
-        
-        <!-- PÁGINA: FIM DE SEMANA -->
         <div class="app-page-slide" id="slide-weekend">
             <main class="bottom-sheet">
                 <div class="cards-list">
                     
-                    <!-- Discurso Público -->
+                    <!-- Card Discurso Público -->
                     <div class="card-funcao" style="min-height: auto; gap: 20px; padding: 20px 0; border-left-color: #2F6c82;">
                         <span class="funcao-titulo" style="display: flex; align-items: center; gap: 8px; padding: 0px 15px;">
-                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#08394e"><g id="SVGRepo_bgCarrier" stroke-width="2"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" stroke="#08394E" stroke-width="2"></path> <path d="M8 10.5H16" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path> <path d="M8 14H13.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#08394e"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" stroke="#08394E" stroke-width="2"></path><path d="M8 10.5H16" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path><path d="M8 14H13.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path></svg>
                             DISCURSO PÚBLICO
                         </span>
                         
@@ -269,8 +231,8 @@
                         <div style="display: flex; gap: 25px; width: 100%;">
                             <div style="display: flex; flex-direction: row; align-items: center; gap: 6px; flex: 1;">
                                 <span style="font-size: 16px; padding: 0px 0px 0px 17px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; white-space: nowrap;">
-                                    <svg width="24px" height="24px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 3px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M18.18 8.03933L18.6435 7.57589C19.4113 6.80804 20.6563 6.80804 21.4241 7.57589C22.192 8.34374 22.192 9.58868 21.4241 10.3565L20.9607 10.82M18.18 8.03933L13.9194 12.2999C13.6308 12.5885 13.4865 12.7328 13.3624 12.8919C13.2161 13.0796 13.0906 13.2827 12.9882 13.4975C12.9014 13.6797 12.8368 13.8732 12.7078 14.2604L12.2946 15.5L12.1609 15.901M20.9607 10.82L16.7001 15.0806C16.4115 15.3692 16.2672 15.5135 16.1081 15.6376C15.9204 15.7839 15.7173 15.9094 15.5025 16.0118C15.3203 16.0986 15.1268 16.1632 14.7396 16.2922L13.5 16.7054L13.099 16.8391M13.099 16.8391L12.6979 16.9728C12.5074 17.0363 12.2973 16.9867 12.1553 16.8447C12.0133 16.7027 11.9637 16.4926 12.0272 16.3021L12.1609 15.901M13.099 16.8391L12.1609 15.901" stroke="#08394E" stroke-width="2"></path> <path d="M8 13H10.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path> <path d="M8 9H14.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path> <path d="M8 17H9.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path> <path d="M19.8284 3.17157C18.6569 2 16.7712 2 13 2H11C7.22876 2 5.34315 2 4.17157 3.17157C3 4.34315 3 6.22876 3 10V14C3 17.7712 3 19.6569 4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284C20.7715 19.8853 20.9554 18.4796 20.9913 16" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path> </g></svg>ESBOÇO:</span>
-                                <input type="text" class="input-card" data-field="esboco" style="text-align: left; font-weight: 400; padding: 0px 4px 3px 0px; font-size: 19px;" placeholder="•••">
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 3px 0;"><path d="M18.18 8.03933L18.6435 7.57589C19.4113 6.80804 20.6563 6.80804 21.4241 7.57589C22.192 8.34374 22.192 9.58868 21.4241 10.3565L20.9607 10.82M18.18 8.03933L13.9194 12.2999C13.6308 12.5885 13.4865 12.7328 13.3624 12.8919C13.2161 13.0796 13.0906 13.2827 12.9882 13.4975C12.9014 13.6797 12.8368 13.8732 12.7078 14.2604L12.2946 15.5L12.1609 15.901M20.9607 10.82L16.7001 15.0806C16.4115 15.3692 16.2672 15.5135 16.1081 15.6376C15.9204 15.7839 15.7173 15.9094 15.5025 16.0118C15.3203 16.0986 15.1268 16.1632 14.7396 16.2922L13.5 16.7054L13.099 16.8391M13.099 16.8391L12.6979 16.9728C12.5074 17.0363 12.2973 16.9867 12.1553 16.8447C12.0133 16.7027 11.9637 16.4926 12.0272 16.3021L12.1609 15.901M13.099 16.8391L12.1609 15.901" stroke="#08394E" stroke-width="2"></path><path d="M8 13H10.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path><path d="M8 9H14.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path><path d="M8 17H9.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path><path d="M19.8284 3.17157C18.6569 2 16.7712 2 13 2H11C7.22876 2 5.34315 2 4.17157 3.17157C3 4.34315 3 6.22876 3 10V14C3 17.7712 3 19.6569 4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284C20.7715 19.8853 20.9554 18.4796 20.9913 16" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path></svg>ESBOÇO:</span>
+                                <input type="number" id="input-esboco" class="input-card" data-field="esboco" style="text-align: left; font-weight: 400; padding: 0px 4px 3px 0px; font-size: 19px;" placeholder="•••">
                             </div>
                             <div style="display: flex; flex-direction: row; align-items: center; gap: 6px; flex: 1;">
                                 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; white-space: nowrap;">
@@ -284,8 +246,8 @@
                         <!-- Linha 2: Tema -->
                         <div style="display: flex; flex-direction: column; gap: 2px; width: 100%;">
                             <span style="font-size: 16px; padding: 0px 17px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px;">
-                                <svg width="24px" height="24px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 3px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z" stroke="#08394e" stroke-width="2"></path> <path d="M8 12H16" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M8 8H16" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M8 16H13" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> </g></svg>TEMA</span>
-                            <div class="nome-irmao" data-field="tema" style="text-align: left; font-size: 22px; padding: 0px 17px; font-weight: 500; line-height: 1.3; color: #141416;">•••</div>
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 3px 0;"><path d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z" stroke="#08394e" stroke-width="2"></path><path d="M8 12H16" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M8 8H16" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M8 16H13" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path></svg>TEMA</span>
+                            <div id="area-tema" class="nome-irmao" data-field="tema" style="text-align: left; font-size: 22px; padding: 0px 17px; font-weight: 500; line-height: 1.3; color: #141416;">•••</div>
                         </div>
                         
                         <div style="width: 100%; height: 1px; background-color: rgba(0,0,0,0.06); margin: -2px 0;"></div>
@@ -294,23 +256,23 @@
                         <div style="display: flex; gap: 16px; width: 100%;">
                             <div style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
                                 <span style="font-size: 16px; padding: 0px 17px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px;">
-                                    <svg width="24px" height="24px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 3px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="10" cy="6" r="4" stroke="#08394e" stroke-width="2"></circle> <path d="M18 17.5C18 19.9853 18 22 10 22C2 22 2 19.9853 2 17.5C2 15.0147 5.58172 13 10 13C14.4183 13 18 15.0147 18 17.5Z" stroke="#08394e" stroke-width="2"></path> <path d="M19 2C19 2 21 3.2 21 6C21 8.8 19 10 19 10" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M17 4C17 4 18 4.6 18 6C18 7.4 17 8 17 8" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> </g></svg>ORADOR</span>
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 3px 0;"><circle cx="10" cy="6" r="4" stroke="#08394e" stroke-width="2"></circle><path d="M18 17.5C18 19.9853 18 22 10 22C2 22 2 19.9853 2 17.5C2 15.0147 5.58172 13 10 13C14.4183 13 18 15.0147 18 17.5Z" stroke="#08394e" stroke-width="2"></path><path d="M19 2C19 2 21 3.2 21 6C21 8.8 19 10 19 10" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M17 4C17 4 18 4.6 18 6C18 7.4 17 8 17 8" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path></svg>ORADOR</span>
                                 <input type="text" class="input-card" data-field="orador" style="text-align: left; font-weight: 500; padding: 0px 17px; font-size: 19px;" placeholder="•••">
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
                                 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px;">
-                                    <svg width="25px" height="25px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 5px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 22L2 22" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M2 11L10.1259 4.49931C11.2216 3.62279 12.7784 3.62279 13.8741 4.49931L22 11" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M4 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M20 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M15 22V17C15 15.5858 15 14.8787 14.5607 14.4393C14.1213 14 13.4142 14 12 14C10.5858 14 9.87868 14 9.43934 14.4393C9 14.8787 9 15.5858 9 17V22" stroke="#08394e" stroke-width="2"></path> </g></svg>CONGREGAÇÃO</span>
+                                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 5px 0;"><path d="M22 22L2 22" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M2 11L10.1259 4.49931C11.2216 3.62279 12.7784 3.62279 13.8741 4.49931L22 11" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M4 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M20 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M15 22V17C15 15.5858 15 14.8787 14.5607 14.4393C14.1213 14 13.4142 14 12 14C10.5858 14 9.87868 14 9.43934 14.4393C9 14.8787 9 15.5858 9 17V22" stroke="#08394e" stroke-width="2"></path></svg>CONGREGAÇÃO</span>
                                 <input type="text" class="input-card" data-field="congregacao" style="text-align: left; font-weight: 400; font-size: 19px; padding: 0px 4px 3px 0px;" placeholder="•••">
                             </div>
                         </div>
 
                         <div style="width: 100%; height: 1px; background-color: rgba(0,0,0,0.06); margin: -2px 0;"></div>
 
-                        <!-- Linha 4: Endereço (Modificado para Textarea adaptável) -->
+                        <!-- Linha 4: Endereço (Auto-ajustável) -->
                         <div style="display: flex; flex-direction: column; gap: 2px; width: 100%;">
                             <span style="font-size: 16px; padding: 0px 17px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px;">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 3px 0;"><g stroke="#08394e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-9-6-9-11a9 9 0 0 1 18 0c0 5-9 11-9 11z"/><circle cx="12" cy="10" r="3"/></g></svg>ENDEREÇO</span>
-                            <textarea class="input-card" data-field="endereco" style="text-align: left; font-size: 19px; padding: 0px 17px; font-weight: 400; line-height: 1.3; resize: none; overflow: hidden; height: auto;" rows="2" placeholder="•••"></textarea>
+                            <textarea id="textarea-endereco" class="input-card" data-field="endereco" style="text-align: left; font-size: 19px; padding: 0px 17px; font-weight: 400; line-height: 1.3; resize: none; overflow: hidden; height: auto;" rows="1" placeholder="•••"></textarea>
                         </div>
 
                     </div>
@@ -318,25 +280,21 @@
                 </div>
             </main>
         </div>
-
     </div>
 
-    <!-- Elemento invisível auxiliar para o seletor de calendário nativo -->
     <input type="date" id="hidden-date-picker" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;">
 
-    <!-- Lógica JavaScript para Controle da Data Formatada -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- CONTROLE DE DATAS ---
             const displayInput = document.getElementById('input-data-custom');
             const hiddenPicker = document.getElementById('hidden-date-picker');
             
-            // Abreviações simplificadas dos meses com a primeira letra maiúscula
             const mesesSimplificados = [
                 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
                 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
             ];
 
-            // Aciona o calendário ao clicar no campo de texto visível
             displayInput.addEventListener('click', function() {
                 if (typeof hiddenPicker.showPicker === 'function') {
                     hiddenPicker.showPicker();
@@ -345,17 +303,72 @@
                 }
             });
 
-           // Captura a alteração da data e formata como "dd de Mmm"
             hiddenPicker.addEventListener('change', function() {
                 if (this.value) {
-                    const partes = this.value.split('-'); // yyyy-mm-dd
+                    const partes = this.value.split('-');
                     const dia = parseInt(partes[2], 10);
                     const mesIndex = parseInt(partes[1], 10) - 1;
-                    
-                    // Define o formato simplificado solicitado "19 de Jul"
                     displayInput.value = `${dia} de ${mesesSimplificados[mesIndex]}`;
                 } else {
                     displayInput.value = '';
+                }
+            });
+
+            // --- AUTO-AJUSTE DA ALTURA DO ENDEREÇO ---
+            const txEndereco = document.getElementById('textarea-endereco');
+            txEndereco.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            });
+
+            // --- INTEGRACÃO DINÂMICA COM O GOOGLE SHEETS (TSV) ---
+            const inputEsboco = document.getElementById('input-esboco');
+            const areaTema = document.getElementById('area-tema');
+            let bancoDeTemas = {};
+
+            // Link da sua base de dados fornecida
+            const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGAcOIMZpt2HD2XMZWqEnV5QjF7322mxVRjI-s3hsGsSzAw6T45pGhCczn0tNzQUQeYcnQ4R3SCyAS/pub?gid=1453510933&single=true&output=tsv";
+
+            async function carregarDadosPlanilha() {
+                try {
+                    const resposta = await fetch(sheetUrl);
+                    const tsvTexto = await resposta.text();
+                    
+                    // Divide o arquivo por linhas
+                    const linhas = tsvTexto.split('\n');
+                    
+                    linhas.forEach(linha => {
+                        // Divide cada linha pelas tabulações (\t) do TSV
+                        const colunas = linha.split('\t');
+                        if (colunas.length >= 2) {
+                            const numero = colunas[0].trim();
+                            const temaOriginal = colunas[1].trim();
+                            
+                            if (numero && temaOriginal) {
+                                bancoDeTemas[numero] = temaOriginal;
+                            }
+                        }
+                    });
+                    console.log("Planilha integrada com sucesso!");
+                } catch (erro) {
+                    console.error("Erro ao carregar planilha externa: ", erro);
+                    areaTema.textContent = "Erro ao conectar à planilha";
+                }
+            }
+
+            // Executa a busca na planilha assim que o app inicia
+            carregarDadosPlanilha();
+
+            // Gerencia a digitação do número do esboço
+            inputEsboco.addEventListener('input', function() {
+                const numeroDigitado = this.value.trim();
+
+                if (numeroDigitado === "") {
+                    areaTema.textContent = "•••";
+                } else if (bancoDeTemas[numeroDigitado]) {
+                    areaTema.textContent = bancoDeTemas[numeroDigitado];
+                } else {
+                    areaTema.textContent = "Esboço não cadastrado";
                 }
             });
         });
