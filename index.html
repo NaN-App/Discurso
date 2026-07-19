@@ -54,7 +54,7 @@
             flex-direction: column;
             gap: 20px;
             border-radius: 0 0 30px 30px;
-            box-shadow: 0 7px 8px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
             z-index: 1000;
         }
 
@@ -68,7 +68,7 @@
         }
 
         .titulo-principal {
-            font-size: 30px;
+            font-size: 40px;
             font-weight: 600;
             color: var(--text-light);
             letter-spacing: -0.5px;
@@ -79,41 +79,6 @@
             align-items: center;
             min-height: 40px;
             width: 100%;
-        }
-
-        .carousel-semanas {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding: 4px 0 8px 0;
-            scrollbar-width: none;
-            min-height: 65px;
-        }
-
-        .carousel-semanas::-webkit-scrollbar {
-            display: none;
-        }
-
-        .semana-card {
-            flex: 0 0 105px;
-            background: transparent;
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 10px 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .semana-card.ativa {
-            background-color: var(--card-white);
-            border-color: var(--card-white);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            transform: translateY(-2px);
         }
 
         /* --- CONTAINER DE CONTEÚDO --- */
