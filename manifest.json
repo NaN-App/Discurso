@@ -1,0 +1,22 @@
+{
+  "name": "Designação de Funções - Salão do Reino",
+  "short_name": "Designações",
+  "description": "Designação de Discurso Público e Funções",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#EEEEEE",
+  "theme_color": "#08394E",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "1000322334.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "1000322334.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
