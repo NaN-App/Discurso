@@ -1,435 +1,1344 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#08394E">
-    <meta name="description" content="Designação de Funções - Salão do Reino">
-    <title>Designação de Funções - Salão do Reino</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#08394E">
+  <meta name="description" content="Gestão e Designação de Oradores Públicos">
+  <title>Gestão de Oradores Públicos</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="1000322334.png" type="image/png">
+  <link rel="apple-touch-icon" href="1000322334.png">
+
+  <!-- Importação da Fonte Cabin -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #EEEEEE;
+      --bg-header: #08394E;
+      --primary-accent: #08394E;
+      --text-light: #FFFFFF; 
+      --text-muted: #0D9490;
+      --card-white: #FFFFFF;
+      --text-dark: #141416;
+      --border-discurso: #2F6c82;
+      --danger: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Cabin", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- CABEÇALHO GLOBAL COM ABAS TIPO PASTA --- */
+   .app-header {
+      background-color: var(--bg-header);
+      padding: 12px 8px 0 8px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      flex-shrink: 0;
+
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .titulo-principal {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .btn-header-action {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      font-size: 14px;
+      padding: 6px 6px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.2s;
+      font-weight: 600;
+    }
+
+    .btn-header-action:active {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* --- NAVEGAÇÃO SUPERIOR DE ABAS TIPO PASTA --- */
+    .top-tabs-nav {
+      display: flex;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      gap: 4px;
+      padding: 0 16px;
+      overflow-x: auto;
+      position: relative; /* Necessário para alinhar o indicador fluido */
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .top-tabs-nav::-webkit-scrollbar {
+      display: none;
+    }
     
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="1000322334.png" type="image/png">
-    <link rel="apple-touch-icon" href="1000322334.png">
-    
-    <!-- Importação da Fonte Cabin -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    /* --- INDICADOR FLUIDO COM CANTOS INVERTIDOS (CÔNCAVOS) --- */
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 44px;
+  background-color: var(--bg-main);
+  border-radius: 14px 14px 0 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: left 0.01s ease, btn 0.01s ease;
+}
 
-    <style>
-        :root {
-            --bg-main: #EEEEEE;
-            --bg-header: #08394E;
-            --primary-accent: #08394E;
-            --text-light: #FFFFFF; 
-            --text-muted: #0D9490;
-            --bg-bottom-sheet: #EEEEEE;
-            --card-white: #FFFFFF;
-            --border-light: rgba(44, 42, 30, 0.06);
-        }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Cabin", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+/* Canto Invertido Esquerdo */
+.tab-indicator::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -14px;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 0 0, transparent 14px, var(--bg-main) 14.5px);
+  pointer-events: none;
+}
 
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-light);
-            height: 100dvh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+/* Canto Invertido Direito */
+.tab-indicator::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -14px;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 100% 0, transparent 14px, var(--bg-main) 14.5px);
+  pointer-events: none;
+}
 
-        /* --- CABEÇALHO GLOBAL --- */
-        .app-header {
-            background-color: var(--bg-header);
-            padding: 24px 20px 24px 20px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-        }
+   .tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 10px 16px; /* Ajuste o padding vertical */
+  height: 44px;       /* Altura fixa para alinhar com o indicador */
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 12px 12px 0 0;
+  text-align: center;
+  transition: color 0.1s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+}
 
-        .header-content {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
 
-        .titulo-principal {
-            font-size: 40px;
-            font-weight: 600;
-            color: var(--text-light);
-            letter-spacing: -0.5px;
-            text-align: center;
-            line-height: 1.2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 40px;
-            width: 100%;
-        }
+    .tab-btn.active {
+      background: transparent; /* Fundo controlado pelo indicador flutuante */
+      color: var(--bg-header);
+      font-weight: 700;
+    }
 
-        /* --- CONTAINER DE CONTEÚDO --- */
-        .app-carousel-viewport {
-            display: flex;
-            width: 100vw;
-            flex-grow: 1;
-            height: 0;
-            overflow-x: hidden;
-            overflow-y: hidden;
-        }
 
-        .app-page-slide {
-            flex: 0 0 100vw;
-            width: 100vw;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
+    /* --- CONTAINER CARROSSEL DE PÁGINAS --- */
+    .app-carousel-viewport {
+      display: flex;
+      width: 100vw;
+      flex-grow: 1;
+      height: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      overscroll-behavior-x: none;
+      -webkit-overflow-scrolling: touch;
+    }
 
-        .bottom-sheet {
-            background-color: var(--bg-bottom-sheet);
-            padding: 15px 15px 15px 13px;
-            flex-grow: 1;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
+    .app-carousel-viewport::-webkit-scrollbar {
+      display: none;
+    }
 
-        .cards-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-            max-width: 600px;
-        }
+    /* --- CADA PÁGINA INDIVIDUAL --- */
+    .app-page-slide {
+      background-color: #Eeeeee;
+      flex: 0 0 100vw;
+      width: 100vw;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      padding: 16px 14px 90px 14px;
+    }
 
-        .card-funcao {
-            background-color: var(--card-white);
-            border-radius: 20px;
-            padding: 20px 10px;
-            box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100px;
-            border: 0px solid var(--border-light);
-            border-left: 8px solid var(--bg-main);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease;
-        }
+    /* --- CARD DE MÊS DENTRO DA PÁGINA --- */
+    .month-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      padding: 8px 16px;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 240px;
+      margin: 0 auto 12px auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+      flex-shrink: 0;
+    }
 
-        .funcao-titulo {
-            font-size: 19px;
-            font-weight: 700;
-            color: #08394E;
-            align-self: flex-start;
-        }
+    .month-nav button {
+      background: none;
+      border: none;
+      color: var(--primary-accent);
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 4px 10px;
+    }
 
-        .input-card {
-            background: transparent;
-            border: none;
-            color: #141416;
-            outline: none;
-            flex: 1;
-            min-width: 0;
-            width: 100%;
-            padding: 0;
-            margin: 0;
-        }
+    .month-title {
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary-accent);
+    }
 
-        .input-card::placeholder {
-            color: #141416;
-            opacity: 0.6;
-        }
-    </style>
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: "9e1ba5be-58e8-414e-be13-fc6b2b3e1fa",
-                notifyButton: {
-                    enable: true,
-                },
-            });
-        });
-    </script>
+    .cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* --- CARTÕES DAS PÁGINAS 1, 2 E 3 --- */
+    .card-funcao {
+      background-color: var(--card-white);
+      border-radius: 22px;
+      padding: 13px 10px 13px 15px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 5px solid var(--primary-accent);
+      margin-bottom: 4px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card-funcao.clickable {
+      cursor: pointer;
+    }
+
+    .card-funcao.clickable:active {
+      transform: scale(0.98);
+    }
+
+    .card-date-badge {
+      background: #e2e8f0;
+      color: var(--primary-accent);
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.1;
+      min-width: 52px;
+    }
+
+    .card-details {
+      flex: 1;
+      margin-left: 15px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-accent);
+      line-height: 1.2;
+    }
+
+    .card-subtitle {
+      font-size: 14px;
+      color: var(--text-dark);
+      margin-top: 5px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .card-extra {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .outlines-badge {
+      display: inline-block;
+      margin-top: 4px;
+      background: #e0f2fe;
+      color: var(--primary-accent);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    .btn-delete {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px 6px;
+    }
+
+    /* --- CARTÃO ESPECÍFICO DA PÁGINA 4 (DISCURSO PÚBLICO) --- */
+    .card-discurso {
+      background-color: var(--card-white);
+      border-radius: 25px;
+      padding: 20px 0;
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border-left: 8px solid var(--border-discurso);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .funcao-titulo {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--bg-header);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0px 15px;
+    }
+
+    .card-divider {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .label-style {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-card {
+      background: transparent;
+      border: none;
+      color: var(--text-dark);
+      outline: none;
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .input-card::placeholder {
+      color: var(--text-dark);
+      opacity: 0.6;
+    }
+
+    /* --- BOTÃO FLUTUANTE (FAB) --- */
+    .fab {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary-accent);
+      color: white;
+      border: none;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(8, 57, 78, 0.4);
+      cursor: pointer;
+      z-index: 900;
+      transition: transform 0.2s ease;
+    }
+
+    .fab:active {
+      transform: scale(0.92);
+    }
+
+    /* --- MODAIS E BOTTOM SHEET --- */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0px;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: flex-end;
+      z-index: 2000;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-body {
+      background: white;
+      width: 100%;
+      border-radius: 30px 30px 0 0;
+      padding: 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h3 {
+      color: var(--primary-accent);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      outline: none;
+      color: var(--text-dark);
+      background: #f8fafc;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-accent);
+      background: #fff;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary-accent);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 10px rgba(8, 57, 78, 0.3);
+    }
+
+    .backup-option {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .backup-option p {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .btn-secondary {
+      background: #0D9490;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-block;
+    }
+  </style>
+
+  <!-- OneSignal Push SDK -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "9e1ba5be-58e8-414e-be13-fc6b2b3e1fa",
+        notifyButton: { enable: true },
+      });
+    });
+  </script>
 </head>
 <body>
-    <header class="app-header">
-        <div class="header-content">
-            <h1 class="titulo-principal" id="app-titulo">Designação de Discurso Público</h1>
-            <div class="carousel-semanas">
-                <!-- Inserido via Javascript -->
-            </div>
-        </div>
-    </header>
 
-    <div class="app-carousel-viewport">
-        <div class="app-page-slide" id="slide-weekend">
-            <main class="bottom-sheet">
-                <div class="cards-list">
-                    
-                    <!-- Card Discurso Público -->
-                    <div class="card-funcao" style="min-height: auto; gap: 20px; padding: 20px 0; border-left-color: #2F6c82;">
-                        <span class="funcao-titulo" style="display: flex; align-items: center; gap: 8px; padding: 0px 15px;">
-                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#08394e"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" stroke="#08394E" stroke-width="2"></path><path d="M8 10.5H16" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path><path d="M8 14H13.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path></svg>
-                            DISCURSO PÚBLICO
-                        </span>
-                        
-                        <!-- Linha 1: Apenas a Data (largura total) -->
-                        <div style="display: flex; flex-direction: row; align-items: center; gap: 6px; width: 100%;">
-                            <span style="font-size: 17px; padding: 0px 0px 0px 14px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; white-space: nowrap;">
-                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 5px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12Z" stroke="#08394e" stroke-width="2"></path> <path d="M7 4V2.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M17 4V2.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M2.5 9H21.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M18 17C18 17.5523 17.5523 18 17 18C16.4477 18 16 17.5523 16 17C16 16.4477 16.4477 16 17 16C17.5523 16 18 16.4477 18 17Z" fill="#08394e"></path> <path d="M18 13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13C16 12.4477 16.4477 12 17 12C17.5523 12 18 12.4477 18 13Z" fill="#08394e"></path> <path d="M13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17Z" fill="#08394e"></path> <path d="M13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13Z" fill="#08394e"></path> <path d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z" fill="#08394e"></path> <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="#08394e"></path> </g></svg>DATA:</span>
-                            <input type="text" id="input-data-custom" class="input-card-save" data-field="data" style="text-align: left; font-weight: 500; padding: 0px 4px 3px 0px; font-size: 19px; background: transparent; border: none; color: #141416; outline: none; flex: 1; min-width: 0; width: 100%; cursor: pointer;" placeholder="•••" readonly>
-                        </div>
-                        
-                        <div style="width: 100%; height: 1px; background-color: rgba(0,0,0,0.06); margin: -2px 0;"></div>
-                        
-                        <!-- Linha 2: Cabeçalho do Tema -->
-                        <div style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 0px 14px;">
-                            <!-- Label TEMA -->
-                            <span style="font-size: 17px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; display: flex; align-items: center;">
-                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 0px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M18.18 8.03933L18.6435 7.57589C19.4113 6.80804 20.6563 6.80804 21.4241 7.57589C22.192 8.34374 22.192 9.58868 21.4241 10.3565L20.9607 10.82M18.18 8.03933C18.18 8.03933 18.238 9.02414 19.1069 9.89309C19.9759 10.762 20.9607 10.82 20.9607 10.82M18.18 8.03933L13.9194 12.2999C13.6308 12.5885 13.4865 12.7328 13.3624 12.8919C13.2161 13.0796 13.0906 13.2827 12.9882 13.4975C12.9014 13.6797 12.8368 13.8732 12.7078 14.2604L12.2946 15.5L12.1609 15.901M20.9607 10.82L16.7001 15.0806C16.4115 15.3692 16.2672 15.5135 16.1081 15.6376C15.9204 15.7839 15.7173 15.9094 15.5025 16.0118C15.3203 16.0986 15.1268 16.1632 14.7396 16.2922L13.5 16.7054L13.099 16.8391M13.099 16.8391L12.6979 16.9728C12.5074 17.0363 12.2973 16.9867 12.1553 16.8447C12.0133 16.7027 11.9637 16.4926 12.0272 16.3021L12.1609 15.901M13.099 16.8391L12.1609 15.901" stroke="#08394e" stroke-width="2"></path> <path d="M8 13H10.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M8 9H14.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M8 17H9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M19.8284 3.17157C18.6569 2 16.7712 2 13 2H11C7.22876 2 5.34315 2 4.17157 3.17157C3 4.34315 3 6.22876 3 10V14C3 17.7712 3 19.6569 4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284C20.7715 19.8853 20.9554 18.4796 20.9913 16" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> </g></svg>ESBOÇO:</span>
+  <!-- CABEÇALHO GLOBAL COM ABAS TIPO PASTA NO TOPO -->
+  <header class="app-header">
+  <div class="header-top">
+    <!-- Título Fixo para todas as páginas -->
+    <h1 class="titulo-principal" style= "padding: 5px 0 0 15px;" id="app-title">Arranjo de Oradores</h1>
+    <button class="btn-header-action" onclick="openBackupModal()" title="Backup e Restauração">Backup</button>
+  </div>
 
-                            <!-- Input do Esboço -->
-                            <input type="number" id="input-esboco" class="input-card-save" data-field="esboco" style="text-align: left; font-weight: 500; font-size: 19px; background: transparent; border: none; color: #141416; outline: none; width: 45px;" placeholder="•••">
-                        </div>
+    <!-- ABAS TIPO PASTA INTEGRADAS AO TOPO -->
+    <nav class="top-tabs-nav" id="top-tabs">
+      <button class="tab-btn active" onclick="mudarPagina(0)">Enviar</button>
+      <button class="tab-btn" onclick="mudarPagina(1)">Receber</button>
+      <button class="tab-btn" onclick="mudarPagina(2)">Oradores</button>
+      <button class="tab-btn" onclick="mudarPagina(3)">Designação</button>
+      
+      <!-- INDICADOR LÍQUIDO/FLUIDO DA ABA ATIVA -->
+      <div class="tab-indicator" id="tab-indicator"></div>
+    </nav>
+  </header>
 
-                        <!-- Texto Descritivo do Tema posicionado logo abaixo -->
-                        <div id="area-tema" class="nome-irmao" data-field="tema" style="text-align: left; font-size: 22px; padding: 0px 14px; font-weight: 500; line-height: 1.3; color: #141416; width: 100%;">•••</div>
-                        
-                        <div style="width: 100%; height: 1px; background-color: rgba(0,0,0,0.06); margin: -2px 0;"></div>
-                        
-                        <!-- Linha 3: Orador e Congregação -->
-                        <div style="display: flex; gap: 16px; width: 100%;">
-                            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
-                                <span style="font-size: 17px; padding: 0px 15px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px;">
-                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 3px 0;"><circle cx="10" cy="6" r="4" stroke="#08394e" stroke-width="2"></circle><path d="M18 17.5C18 19.9853 18 22 10 22C2 22 2 19.9853 2 17.5C2 15.0147 5.58172 13 10 13C14.4183 13 18 15.0147 18 17.5Z" stroke="#08394e" stroke-width="2"></path><path d="M19 2C19 2 21 3.2 21 6C21 8.8 19 10 19 10" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M17 4C17 4 18 4.6 18 6C18 7.4 17 8 17 8" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path></svg>ORADOR</span>
-                                <input type="text" class="input-card-save" data-field="orador" style="text-align: left; font-weight: 400; padding: 0px 14px; font-size: 19px; background: transparent; border: none; color: #141416; outline: none; flex: 1; min-width: 0; width: 100%;" placeholder="•••">
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
-                                <span style="font-size: 17px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px;">
-                                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 5px 0;"><path d="M22 22L2 22" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M2 11L10.1259 4.49931C11.2216 3.62279 12.7784 3.62279 13.8741 4.49931L22 11" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M4 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M20 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M15 22V17C15 15.5858 15 14.8787 14.5607 14.4393C14.1213 14 13.4142 14 12 14C10.5858 14 9.87868 14 9.43934 14.4393C9 14.8787 9 15.5858 9 17V22" stroke="#08394e" stroke-width="2"></path></svg>CONGREGAÇÃO</span>
-                                <input type="text" class="input-card-save" data-field="congregacao" style="text-align: left; font-weight: 400; font-size: 19px; padding: 0px 4px 3px 0px; background: transparent; border: none; color: #141416; outline: none; flex: 1; min-width: 0; width: 100%;" placeholder="•••">
-                            </div>
-                        </div>
-
-                        <div style="width: 100%; height: 1px; background-color: rgba(0,0,0,0.06); margin: -2px 0;"></div>
-
-                        <!-- Linha 4: Endereço (Auto-ajustável) -->
-                        <div style="display: flex; flex-direction: column; gap: 2px; width: 100%;">
-                            <span style="font-size: 17px; padding: 0px 14px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px;">
-                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 5px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M18 8L18.9487 8.31623C19.9387 8.64624 20.4337 8.81124 20.7169 9.20407C21 9.5969 21 10.1187 21 11.1623V16.829C21 18.1199 21 18.7653 20.6603 19.18C20.5449 19.3208 20.4048 19.4394 20.247 19.5301C19.7821 19.797 19.1455 19.6909 17.8721 19.4787C16.6157 19.2693 15.9875 19.1646 15.3648 19.2167C15.1463 19.235 14.9292 19.2676 14.715 19.3144C14.1046 19.4477 13.5299 19.735 12.3806 20.3097C10.8809 21.0596 10.131 21.4345 9.33284 21.5501C9.09242 21.5849 8.8498 21.6021 8.60688 21.6016C7.80035 21.6001 7.01186 21.3373 5.43488 20.8116L5.05132 20.6838C4.06129 20.3538 3.56627 20.1888 3.28314 19.7959C3 19.4031 3 18.8813 3 17.8377V12.908C3 11.2491 3 10.4197 3.48841 9.97358C3.57388 9.89552 3.66809 9.82762 3.76917 9.77122C4.34681 9.44894 5.13369 9.71123 6.70746 10.2358" stroke="#08394e" stroke-width="2"></path> <path d="M6 7.70031C6 4.55211 8.68629 2 12 2C15.3137 2 18 4.55211 18 7.70031C18 10.8238 16.085 14.4687 13.0972 15.7721C12.4007 16.076 11.5993 16.076 10.9028 15.7721C7.91499 14.4687 6 10.8238 6 7.70031Z" stroke="#08394e" stroke-width="2"></path> <circle cx="12" cy="8" r="2" stroke="#08394e" stroke-width="2"></circle> </g></svg>ENDEREÇO</span>
-                            <textarea id="textarea-endereco" class="input-card-save" data-field="endereco" style="text-align: left; font-size: 19px; padding: 0px 14px; font-weight: 400; line-height: 1.3; resize: none; overflow: hidden; background: transparent; border: none; color: #141416; outline: none; min-width: 0; width: 100%;" rows="1" placeholder="•••"></textarea>
-                        </div>
-
-                        <div style="width: 100%; height: 1px; background-color: rgba(0,0,0,0.06); margin: -2px 0;"></div>
-
-                       <!-- Linha 5: Responsável -->
-                        <div style="display: flex; flex-direction: row; align-items: center; gap: 6px; flex: 1;">
-                            <span style="font-size: 17px; padding: 0px 0px 0px 14px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; white-space: nowrap;">
-                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 3px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4.7177 3.0919C5.94388 1.80096 7.9721 2.04283 8.98569 3.47641L10.2467 5.25989C11.0574 6.40656 10.9889 8.00073 10.0214 9.0194L9.7765 9.27719C9.77582 9.27897 9.7751 9.2809 9.77436 9.28299C9.76142 9.31935 9.7287 9.43513 9.7609 9.65489C9.82765 10.1104 10.1793 11.0361 11.607 12.5392C13.0391 14.0469 13.9078 14.4023 14.3103 14.4677C14.484 14.4959 14.5748 14.4714 14.6038 14.4612L15.0124 14.031C15.8862 13.111 17.2485 12.9298 18.347 13.5621L20.2575 14.6617C21.8904 15.6016 22.2705 17.9008 20.9655 19.2747L19.545 20.7703C19.1016 21.2371 18.497 21.6355 17.75 21.7092C15.9261 21.8893 11.701 21.6548 7.27161 16.9915C3.13844 12.64 2.35326 8.85513 2.25401 7.00591L2.92011 6.97016L2.25401 7.00591C2.20497 6.09224 2.61224 5.30855 3.1481 4.7444L4.7177 3.0919ZM7.7609 4.34237C7.24855 3.61773 6.32812 3.57449 5.80528 4.12493L4.23568 5.77743C3.90429 6.12632 3.73042 6.52621 3.75185 6.92552C3.83289 8.43533 4.48307 11.8776 8.35919 15.9584C12.4234 20.2373 16.1676 20.3581 17.6026 20.2165C17.8864 20.1885 18.1783 20.031 18.4574 19.7373L19.8779 18.2417C20.4907 17.5965 20.3301 16.4342 19.5092 15.9618L17.5987 14.8621C17.086 14.567 16.4854 14.6582 16.1 15.064L15.6445 15.5435L15.1174 15.0428C15.6445 15.5435 15.6438 15.5442 15.6432 15.545L15.6417 15.5464L15.6388 15.5495L15.6324 15.556L15.6181 15.5701C15.6078 15.5801 15.5959 15.591 15.5825 15.6028C15.5556 15.6264 15.5223 15.6533 15.4824 15.6816C15.4022 15.7384 15.2955 15.8009 15.1606 15.8541C14.8846 15.963 14.5201 16.0214 14.0699 15.9483C13.1923 15.8058 12.0422 15.1755 10.5194 13.5722C8.99202 11.9642 8.40746 10.7645 8.27675 9.87234C8.21022 9.41827 8.26346 9.05468 8.36116 8.78011C8.40921 8.64508 8.46594 8.53742 8.51826 8.45566C8.54435 8.41489 8.56922 8.38075 8.5912 8.35298C8.60219 8.33909 8.61246 8.32678 8.62182 8.31603L8.63514 8.30104L8.64125 8.29441L8.64415 8.2913L8.64556 8.2898C8.64625 8.28907 8.64694 8.28835 9.17861 8.79333L8.64695 8.28834L8.93376 7.98637C9.3793 7.51731 9.44403 6.72292 9.02189 6.12586L7.7609 4.34237Z" stroke="#08394e" stroke-width="0.5" fill="#08394e"></path> <path d="M13.2595 1.87983C13.3257 1.47094 13.7122 1.19357 14.1211 1.25976C14.1464 1.26461 14.2279 1.27983 14.2705 1.28933C14.3559 1.30834 14.4749 1.33759 14.6233 1.38082C14.9201 1.46726 15.3347 1.60967 15.8323 1.8378C16.8286 2.29456 18.1544 3.09356 19.5302 4.46936C20.906 5.84516 21.705 7.17097 22.1617 8.16725C22.3899 8.66487 22.5323 9.07947 22.6187 9.37625C22.6619 9.52466 22.6912 9.64369 22.7102 9.72901C22.7197 9.77168 22.7267 9.80594 22.7315 9.83125L22.7373 9.86245C22.8034 10.2713 22.5286 10.6739 22.1197 10.7401C21.712 10.8061 21.3279 10.53 21.2601 10.1231C21.258 10.1121 21.2522 10.0828 21.2461 10.0551C21.2337 9.9997 21.2124 9.91188 21.1786 9.79572C21.1109 9.56339 20.9934 9.21806 20.7982 8.79238C20.4084 7.94207 19.7074 6.76789 18.4695 5.53002C17.2317 4.29216 16.0575 3.59117 15.2072 3.20134C14.7815 3.00618 14.4362 2.88865 14.2038 2.82097C14.0877 2.78714 13.9417 2.75363 13.8863 2.7413C13.4793 2.67347 13.1935 2.28755 13.2595 1.87983Z" stroke="#08394e" stroke-width="0.5" fill="#08394e"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4861 5.32931C13.5999 4.93103 14.015 4.70041 14.4133 4.81421L14.2072 5.53535C14.4133 4.81421 14.4136 4.81431 14.414 4.81441L14.4147 4.81462L14.4162 4.81506L14.4196 4.81604L14.4273 4.81835L14.4471 4.82451C14.4622 4.82934 14.481 4.83562 14.5035 4.84358C14.5484 4.85952 14.6077 4.88218 14.6805 4.91339C14.8262 4.97582 15.0253 5.07224 15.2698 5.21695C15.7593 5.50664 16.4275 5.98781 17.2124 6.77279C17.9974 7.55776 18.4786 8.22595 18.7683 8.71541C18.913 8.95992 19.0094 9.15899 19.0718 9.30467C19.103 9.37748 19.1257 9.43683 19.1416 9.48175C19.1496 9.5042 19.1559 9.52303 19.1607 9.5381L19.1669 9.55789L19.1692 9.56564L19.1702 9.56898L19.1706 9.57051L19.1708 9.57124C19.1709 9.5716 19.171 9.57195 18.4499 9.77799L19.171 9.57195C19.2848 9.97023 19.0542 10.3853 18.6559 10.4991C18.261 10.612 17.8496 10.3862 17.7317 9.99414L17.728 9.98336C17.7227 9.96833 17.7116 9.93875 17.6931 9.89555C17.6561 9.80921 17.589 9.66798 17.4774 9.47939C17.2544 9.10265 16.8517 8.5334 16.1518 7.83345C15.4518 7.13349 14.8826 6.73079 14.5058 6.50782C14.3172 6.3962 14.176 6.32911 14.0897 6.2921C14.0465 6.27359 14.0169 6.26256 14.0019 6.25722L13.9911 6.25353C13.599 6.13565 13.3733 5.7242 13.4861 5.32931Z" stroke="#08394e" stroke-width="0.5" fill="#08394e"></path> </g></svg>RESPONSÁVEL:</span>
-                            <input type="text" class="input-card-save" data-field="responsavel" style="text-align: left; font-weight: 400; padding: 0px 4px 3px 0px; font-size: 19px; background: transparent; border: none; color: #141416; outline: none; flex: 1; min-width: 0; width: 100%;" placeholder="•••">
-                        </div>
-
-                    </div>
-
-                </div>
-            </main>
-        </div>
+  <!-- CARROSSEL DE PÁGINAS -->
+  <div class="app-carousel-viewport" id="carousel-viewport">
+    
+    <!-- PÁGINA 1: ENVIAR ORADORES -->
+    <div class="app-page-slide" id="slide-1">
+      <div class="month-nav">
+        <button onclick="changeMonth(1, 'enviar')" style= "padding: 5px 10px 0px 0px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124 c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844 L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412 c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008 c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788 C492,219.198,479.172,207.418,464.344,207.418z"></path> </g> </g> </g></svg></button>
+        <span class="month-title" id="month-display-enviar">Setembro 2026</span>
+        <button onclick="changeMonth(1, 'enviar')" style= "padding: 5px 0px 0px 10px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve" stroke="#ffffff" stroke-width="0.0049200400000000005"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M484.14,226.886L306.46,49.202c-5.072-5.072-11.832-7.856-19.04-7.856c-7.216,0-13.972,2.788-19.044,7.856l-16.132,16.136 c-5.068,5.064-7.86,11.828-7.86,19.04c0,7.208,2.792,14.2,7.86,19.264L355.9,207.526H26.58C11.732,207.526,0,219.15,0,234.002 v22.812c0,14.852,11.732,27.648,26.58,27.648h330.496L252.248,388.926c-5.068,5.072-7.86,11.652-7.86,18.864 c0,7.204,2.792,13.88,7.86,18.948l16.132,16.084c5.072,5.072,11.828,7.836,19.044,7.836c7.208,0,13.968-2.8,19.04-7.872 l177.68-177.68c5.084-5.088,7.88-11.88,7.86-19.1C492.02,238.762,489.228,231.966,484.14,226.886z"></path> </g> </g> </g></svg></button>
+      </div>
+      <div class="cards-list" id="list-enviar"></div>
     </div>
 
-    <!-- Seletor alterado para datetime-local (Data e Hora) -->
-    <input type="datetime-local" id="hidden-date-picker" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;">
+    <!-- PÁGINA 2: RECEBER ORADORES -->
+    <div class="app-page-slide" id="slide-2">
+      <div class="month-nav">
+        <button onclick="changeMonth(1, 'enviar')" style= "padding: 5px 10px 0px 0px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124 c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844 L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412 c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008 c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788 C492,219.198,479.172,207.418,464.344,207.418z"></path> </g> </g> </g></svg></button>
+        <span class="month-title" id="month-display-receber">Setembro 2026</span>
+        <button onclick="changeMonth(1, 'enviar')" style= "padding: 5px 0px 0px 10px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve" stroke="#ffffff" stroke-width="0.0049200400000000005"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M484.14,226.886L306.46,49.202c-5.072-5.072-11.832-7.856-19.04-7.856c-7.216,0-13.972,2.788-19.044,7.856l-16.132,16.136 c-5.068,5.064-7.86,11.828-7.86,19.04c0,7.208,2.792,14.2,7.86,19.264L355.9,207.526H26.58C11.732,207.526,0,219.15,0,234.002 v22.812c0,14.852,11.732,27.648,26.58,27.648h330.496L252.248,388.926c-5.068,5.072-7.86,11.652-7.86,18.864 c0,7.204,2.792,13.88,7.86,18.948l16.132,16.084c5.072,5.072,11.828,7.836,19.044,7.836c7.208,0,13.968-2.8,19.04-7.872 l177.68-177.68c5.084-5.088,7.88-11.88,7.86-19.1C492.02,238.762,489.228,231.966,484.14,226.886z"></path> </g> </g> </g></svg></button>
+      </div>
+      <div class="cards-list" id="list-receber"></div>
+    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- CONTROLE DE DATAS E HORAS ---
-            const displayInput = document.getElementById('input-data-custom');
-            const hiddenPicker = document.getElementById('hidden-date-picker');
-            
-            const mesesSimplificados = [
-                'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-                'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-            ];
-            const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    <!-- PÁGINA 3: ORADORES LOCAIS -->
+    <div class="app-page-slide" id="slide-3">
+      <div class="cards-list" id="list-oradores"></div>
+    </div>
 
-            displayInput.addEventListener('click', function() {
-                if (typeof hiddenPicker.showPicker === 'function') {
-                    hiddenPicker.showPicker();
-                } else {
-                    hiddenPicker.focus();
-                }
-            });
-
-            hiddenPicker.addEventListener('change', function() {
-                if (this.value) {
-                    // Espera formato "YYYY-MM-DDTHH:mm"
-                    const partesGerais = this.value.split('T');
-                    const dataPartes = partesGerais[0].split('-');
-                    const horaPartes = partesGerais[1].split(':');
-
-                    const ano = parseInt(dataPartes[0], 10);
-                    const mes = parseInt(dataPartes[1], 10) - 1;
-                    const dia = parseInt(dataPartes[2], 10);
-                    
-                    const hora = parseInt(horaPartes[0], 10);
-                    const minuto = parseInt(horaPartes[1], 10);
-
-                    // Cria data para descobrir o dia da semana correto
-                    const dataObj = new Date(ano, mes, dia, hora, minuto);
-
-                    const diaNum = dia;
-                    const mesNome = mesesSimplificados[mes];
-                    const diaSemanaNome = diasSemana[dataObj.getDay()];
-                    
-                    const horaStr = String(hora).padStart(2, '0');
-                    const minutoStr = String(minuto).padStart(2, '0');
-
-                    // Resultado retornado: "29 de Nov - Domingo 18h30"
-                    displayInput.value = `${diaNum} de ${mesNome} - ${diaSemanaNome} ${horaStr}h${minutoStr}`;
-                } else {
-                    displayInput.value = '';
-                }
-                salvarDadosFormulario();
-            });
-
-            // --- AUTO-AJUSTE DA ALTURA DO ENDEREÇO ---
-            const txEndereco = document.getElementById('textarea-endereco');
-            function ajustarAlturaEndereco() {
-                txEndereco.style.height = 'auto';
-                txEndereco.style.height = txEndereco.scrollHeight + 'px';
-            }
-            txEndereco.addEventListener('input', ajustarAlturaEndereco);
-
-            // --- INTEGRACÃO DINÂMICA COM O GOOGLE SHEETS (TSV) ---
-            const inputEsboco = document.getElementById('input-esboco');
-            const areaTema = document.getElementById('area-tema');
-            let bancoDeTemas = {};
-
-            // Link da sua base de dados fornecida
-            const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGAcOIMZpt2HD2XMZWqEnV5QjF7322mxVRjI-s3hsGsSzAw6T45pGhCczn0tNzQUQeYcnQ4R3SCyAS/pub?gid=1453510933&single=true&output=tsv";
-
-            async function carregarDadosPlanilha() {
-                try {
-                    const resposta = await fetch(sheetUrl);
-                    const tsvTexto = await resposta.text();
-                    
-                    // Divide o arquivo por linhas
-                    const linhas = tsvTexto.split('\n');
-                    
-                    linhas.forEach(linha => {
-                        const colunas = linha.split('\t');
-                        if (colunas.length >= 2) {
-                            const numero = colunas[0].trim();
-                            const temaOriginal = colunas[1].trim();
-                            
-                            if (numero && temaOriginal) {
-                                bancoDeTemas[numero] = temaOriginal;
-                            }
-                        }
-                    });
-                    console.log("Planilha integrada com sucesso!");
-                    
-                    // Após baixar a planilha, atualiza o tema se houver um esboço previamente salvo
-                    atualizarTemaComEsboco();
-                } catch (erro) {
-                    console.error("Erro ao carregar planilha externa: ", erro);
-                    areaTema.textContent = "Erro ao conectar à planilha";
-                }
-            }
-
-            function atualizarTemaComEsboco() {
-                const numeroDigitado = inputEsboco.value.trim();
-                if (numeroDigitado === "") {
-                    areaTema.textContent = "•••";
-                } else if (bancoDeTemas[numeroDigitado]) {
-                    areaTema.textContent = bancoDeTemas[numeroDigitado];
-                } else {
-                    areaTema.textContent = "Esboço não cadastrado";
-                }
-                // Salva o estado atual do tema no localStorage
-                localStorage.setItem('form_designacao_tema', areaTema.textContent);
-            }
-
-            // Gerencia a digitação do número do esboço
-            inputEsboco.addEventListener('input', atualizarTemaComEsboco);
-
-            // --- FUNÇÕES DE SALVAMENTO LOCAL (LOCALSTORAGE) ---
-            const inputsParaSalvar = document.querySelectorAll('.input-card-save');
-            
-            function salvarDadosFormulario() {
-                inputsParaSalvar.forEach(input => {
-                    const campo = input.getAttribute('data-field');
-                    if (campo) {
-                        localStorage.setItem('form_designacao_' + campo, input.value);
-                    }
-                });
-                // Salva também o campo oculto de data para o seletor nativo não resetar
-                localStorage.setItem('form_designacao_picker_date', hiddenPicker.value);
-            }
-
-            function carregarDadosFormulario() {
-                inputsParaSalvar.forEach(input => {
-                    const campo = input.getAttribute('data-field');
-                    if (campo) {
-                        const valorSalvo = localStorage.getItem('form_designacao_' + campo);
-                        if (valorSalvo !== null) {
-                            input.value = valorSalvo;
-                        }
-                    }
-                });
-                
-                // Restaura o valor oculto do datepicker
-                const pickerSalvo = localStorage.getItem('form_designacao_picker_date');
-                if (pickerSalvo) {
-                    hiddenPicker.value = pickerSalvo;
-                }
-
-                // Restaura o tema textual de forma temporária enquanto a planilha não carrega
-                const temaSalvo = localStorage.getItem('form_designacao_tema');
-                if (temaSalvo) {
-                    areaTema.textContent = temaSalvo;
-                }
-
-                // Ajusta a altura da caixa de endereço baseado no texto recuperado
-                ajustarAlturaEndereco();
-            }
-
-            // Adiciona ouvintes de evento para salvar os dados à medida que o usuário digita
-            inputsParaSalvar.forEach(input => {
-                input.addEventListener('input', salvarDadosFormulario);
-            });
-
-            // Carrega os dados persistidos e inicia a planilha
-            carregarDadosFormulario();
-            carregarDadosPlanilha();
-        });
+    <!-- PÁGINA 4: DISCURSO PÚBLICO -->
+    <div class="app-page-slide" id="slide-4">
+      <div class="cards-list">
         
-        // Registro do Service Worker para permitir a instalação (PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado com sucesso!', reg))
-                    .catch(err => console.error('Falha ao registrar o Service Worker:', err));
-            });
+        <div class="card-discurso">
+          
+          <!-- Cabeçalho do Card -->
+          <span class="funcao-titulo">
+            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#08394e"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" stroke="#08394E" stroke-width="2"></path><path d="M8 10.5H16" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path><path d="M8 14H13.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path></svg>
+            DISCURSO PÚBLICO
+          </span>
+          
+          <!-- Linha 1: Data -->
+          <div style="display: flex; flex-direction: row; align-items: center; gap: 6px; width: 100%;">
+            <span class="label-style" style="padding: 0px 0px 0px 14px; white-space: nowrap;">
+              <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 3px 0px 0px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12Z" stroke="#08394e" stroke-width="2"></path> <path d="M7 4V2.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M17 4V2.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M2.5 9H21.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M18 17C18 17.5523 17.5523 18 17 18C16.4477 18 16 17.5523 16 17C16 16.4477 16.4477 16 17 16C17.5523 16 18 16.4477 18 17Z" fill="#08394e"></path> <path d="M18 13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13C16 12.4477 16.4477 12 17 12C17.5523 12 18 12.4477 18 13Z" fill="#08394e"></path> <path d="M13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17Z" fill="#08394e"></path> <path d="M13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13Z" fill="#08394e"></path> <path d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z" fill="#08394e"></path> <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="#08394e"></path> </g></svg>DATA:</span>
+            <input type="text" id="input-data-custom" class="input-card input-card-save" data-field="data" style="text-align: left; font-weight: 500; padding: 0px 4px 3px 0px; cursor: pointer;" placeholder="•••" readonly>
+          </div>
+          
+          <div class="card-divider"></div>
+          
+          <!-- Linha 2: Esboço -->
+          <div style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 0px 14px;">
+            <span class="label-style">
+              <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 5px 0px 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M18.18 8.03933L18.6435 7.57589C19.4113 6.80804 20.6563 6.80804 21.4241 7.57589C22.192 8.34374 22.192 9.58868 21.4241 10.3565L20.9607 10.82M18.18 8.03933C18.18 8.03933 18.238 9.02414 19.1069 9.89309C19.9759 10.762 20.9607 10.82 20.9607 10.82M18.18 8.03933L13.9194 12.2999C13.6308 12.5885 13.4865 12.7328 13.3624 12.8919C13.2161 13.0796 13.0906 13.2827 12.9882 13.4975C12.9014 13.6797 12.8368 13.8732 12.7078 14.2604L12.2946 15.5L12.1609 15.901M20.9607 10.82L16.7001 15.0806C16.4115 15.3692 16.2672 15.5135 16.1081 15.6376C15.9204 15.7839 15.7173 15.9094 15.5025 16.0118C15.3203 16.0986 15.1268 16.1632 14.7396 16.2922L13.5 16.7054L13.099 16.8391M13.099 16.8391L12.6979 16.9728C12.5074 17.0363 12.2973 16.9867 12.1553 16.8447C12.0133 16.7027 11.9637 16.4926 12.0272 16.3021L12.1609 15.901M13.099 16.8391L12.1609 15.901" stroke="#08394e" stroke-width="2"></path> <path d="M8 13H10.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M8 9H14.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M8 17H9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> <path d="M19.8284 3.17157C18.6569 2 16.7712 2 13 2H11C7.22876 2 5.34315 2 4.17157 3.17157C3 4.34315 3 6.22876 3 10V14C3 17.7712 3 19.6569 4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284C20.7715 19.8853 20.9554 18.4796 20.9913 16" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path> </g></svg>ESBOÇO:</span>
+            <input type="number" id="input-esboco" class="input-card input-card-save" data-field="esboco" style="text-align: left; font-weight: 500; width: 60px;" placeholder="•••">
+          </div>
+
+          <!-- Tema Automático obtido do Sheets -->
+          <div id="area-tema" class="nome-irmao" data-field="tema" style="text-align: left; font-size: 19px; padding: 0px 14px; font-weight: 500; line-height: 1.3; color: var(--text-dark); width: 100%;">•••</div>
+          
+          <div class="card-divider"></div>
+          
+          <!-- Linha 3: Orador e Congregação -->
+          <div style="display: flex; gap: 16px; width: 100%;">
+            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
+              <span class="label-style" style="padding: 0px 15px;">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 0px 0;"><circle cx="10" cy="6" r="4" stroke="#08394e" stroke-width="2"></circle><path d="M18 17.5C18 19.9853 18 22 10 22C2 22 2 19.9853 2 17.5C2 15.0147 5.58172 13 10 13C14.4183 13 18 15.0147 18 17.5Z" stroke="#08394e" stroke-width="2"></path><path d="M19 2C19 2 21 3.2 21 6C21 8.8 19 10 19 10" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M17 4C17 4 18 4.6 18 6C18 7.4 17 8 17 8" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path></svg>ORADOR</span>
+              <input type="text" class="input-card input-card-save" data-field="orador" style="text-align: left; font-weight: 400; padding: 0px 14px;" placeholder="•••">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
+              <span class="label-style">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 2px 0;"><path d="M22 22L2 22" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M2 11L10.1259 4.49931C11.2216 3.62279 12.7784 3.62279 13.8741 4.49931L22 11" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M4 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M20 22V9.5" stroke="#08394e" stroke-width="2" stroke-linecap="round"></path><path d="M15 22V17C15 15.5858 15 14.8787 14.5607 14.4393C14.1213 14 13.4142 14 12 14C10.5858 14 9.87868 14 9.43934 14.4393C9 14.8787 9 15.5858 9 17V22" stroke="#08394e" stroke-width="2"></path></svg>CONGREGAÇÃO</span>
+              <input type="text" class="input-card input-card-save" data-field="congregacao" style="text-align: left; font-weight: 400; padding: 0px 4px 3px 0px;" placeholder="•••">
+            </div>
+          </div>
+
+          <div class="card-divider"></div>
+
+       <!-- Linha 4: Endereço -->
+          <div style="display: flex; flex-direction: column; gap: 2px; width: 100%;">
+            <span class="label-style" style="padding: 0px 14px;">
+              <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 3px 0 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M18 8L18.9487 8.31623C19.9387 8.64624 20.4337 8.81124 20.7169 9.20407C21 9.5969 21 10.1187 21 11.1623V16.829C21 18.1199 21 18.7653 20.6603 19.18C20.5449 19.3208 20.4048 19.4394 20.247 19.5301C19.7821 19.797 19.1455 19.6909 17.8721 19.4787C16.6157 19.2693 15.9875 19.1646 15.3648 19.2167C15.1463 19.235 14.9292 19.2676 14.715 19.3144C14.1046 19.4477 13.5299 19.735 12.3806 20.3097C10.8809 21.0596 10.131 21.4345 9.33284 21.5501C9.09242 21.5849 8.8498 21.6021 8.60688 21.6016C7.80035 21.6001 7.01186 21.3373 5.43488 20.8116L5.05132 20.6838C4.06129 20.3538 3.56627 20.1888 3.28314 19.7959C3 19.4031 3 18.8813 3 17.8377V12.908C3 11.2491 3 10.4197 3.48841 9.97358C3.57388 9.89552 3.66809 9.82762 3.76917 9.77122C4.34681 9.44894 5.13369 9.71123 6.70746 10.2358" stroke="#08394e" stroke-width="2"></path> <path d="M6 7.70031C6 4.55211 8.68629 2 12 2C15.3137 2 18 4.55211 18 7.70031C18 10.8238 16.085 14.4687 13.0972 15.7721C12.4007 16.076 11.5993 16.076 10.9028 15.7721C7.91499 14.4687 6 10.8238 6 7.70031Z" stroke="#08394e" stroke-width="2"></path> <circle cx="12" cy="8" r="2" stroke="#08394e" stroke-width="2"></circle> </g></svg>ENDEREÇO</span>
+            <textarea id="textarea-endereco" class="input-card input-card-save" data-field="endereco" style="text-align: left; padding: 0px 14px; font-weight: 400; line-height: 1.3; resize: none; overflow: hidden;" rows="1" placeholder="•••"></textarea>
+          </div>
+
+          <div class="card-divider"></div>
+
+          <!-- Linha 5: Responsável -->
+          <div style="display: flex; flex-direction: row; align-items: center; gap: 6px; flex: 1;">
+            <span class="label-style" style="padding: 0px 0px 0px 14px; white-space: nowrap;">
+              <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; padding: 0 4px 0 0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4.7177 3.0919C5.94388 1.80096 7.9721 2.04283 8.98569 3.47641L10.2467 5.25989C11.0574 6.40656 10.9889 8.00073 10.0214 9.0194L9.7765 9.27719C9.77582 9.27897 9.7751 9.2809 9.77436 9.28299C9.76142 9.31935 9.7287 9.43513 9.7609 9.65489C9.82765 10.1104 10.1793 11.0361 11.607 12.5392C13.0391 14.0469 13.9078 14.4023 14.3103 14.4677C14.484 14.4959 14.5748 14.4714 14.6038 14.4612L15.0124 14.031C15.8862 13.111 17.2485 12.9298 18.347 13.5621L20.2575 14.6617C21.8904 15.6016 22.2705 17.9008 20.9655 19.2747L19.545 20.7703C19.1016 21.2371 18.497 21.6355 17.75 21.7092C15.9261 21.8893 11.701 21.6548 7.27161 16.9915C3.13844 12.64 2.35326 8.85513 2.25401 7.00591L2.92011 6.97016L2.25401 7.00591C2.20497 6.09224 2.61224 5.30855 3.1481 4.7444L4.7177 3.0919ZM7.7609 4.34237C7.24855 3.61773 6.32812 3.57449 5.80528 4.12493L4.23568 5.77743C3.90429 6.12632 3.73042 6.52621 3.75185 6.92552C3.83289 8.43533 4.48307 11.8776 8.35919 15.9584C12.4234 20.2373 16.1676 20.3581 17.6026 20.2165C17.8864 20.1885 18.1783 20.031 18.4574 19.7373L19.8779 18.2417C20.4907 17.5965 20.3301 16.4342 19.5092 15.9618L17.5987 14.8621C17.086 14.567 16.4854 14.6582 16.1 15.064L15.6445 15.5435L15.1174 15.0428C15.6445 15.5435 15.6438 15.5442 15.6432 15.545L15.6417 15.5464L15.6388 15.5495L15.6324 15.556L15.6181 15.5701C15.6078 15.5801 15.5959 15.591 15.5825 15.6028C15.5556 15.6264 15.5223 15.6533 15.4824 15.6816C15.4022 15.7384 15.2955 15.8009 15.1606 15.8541C14.8846 15.963 14.5201 16.0214 14.0699 15.9483C13.1923 15.8058 12.0422 15.1755 10.5194 13.5722C8.99202 11.9642 8.40746 10.7645 8.27675 9.87234C8.21022 9.41827 8.26346 9.05468 8.36116 8.78011C8.40921 8.64508 8.46594 8.53742 8.51826 8.45566C8.54435 8.41489 8.56922 8.38075 8.5912 8.35298C8.60219 8.33909 8.61246 8.32678 8.62182 8.31603L8.63514 8.30104L8.64125 8.29441L8.64415 8.2913L8.64556 8.2898C8.64625 8.28907 8.64694 8.28835 9.17861 8.79333L8.64695 8.28834L8.93376 7.98637C9.3793 7.51731 9.44403 6.72292 9.02189 6.12586L7.7609 4.34237Z" stroke="#08394e" stroke-width="0.5" fill="#08394e"></path> <path d="M13.2595 1.87983C13.3257 1.47094 13.7122 1.19357 14.1211 1.25976C14.1464 1.26461 14.2279 1.27983 14.2705 1.28933C14.3559 1.30834 14.4749 1.33759 14.6233 1.38082C14.9201 1.46726 15.3347 1.60967 15.8323 1.8378C16.8286 2.29456 18.1544 3.09356 19.5302 4.46936C20.906 5.84516 21.705 7.17097 22.1617 8.16725C22.3899 8.66487 22.5323 9.07947 22.6187 9.37625C22.6619 9.52466 22.6912 9.64369 22.7102 9.72901C22.7197 9.77168 22.7267 9.80594 22.7315 9.83125L22.7373 9.86245C22.8034 10.2713 22.5286 10.6739 22.1197 10.7401C21.712 10.8061 21.3279 10.53 21.2601 10.1231C21.258 10.1121 21.2522 10.0828 21.2461 10.0551C21.2337 9.9997 21.2124 9.91188 21.1786 9.79572C21.1109 9.56339 20.9934 9.21806 20.7982 8.79238C20.4084 7.94207 19.7074 6.76789 18.4695 5.53002C17.2317 4.29216 16.0575 3.59117 15.2072 3.20134C14.7815 3.00618 14.4362 2.88865 14.2038 2.82097C14.0877 2.78714 13.9417 2.75363 13.8863 2.7413C13.4793 2.67347 13.1935 2.28755 13.2595 1.87983Z" stroke="#08394e" stroke-width="0.5" fill="#08394e"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4861 5.32931C13.5999 4.93103 14.015 4.70041 14.4133 4.81421L14.2072 5.53535C14.4133 4.81421 14.4136 4.81431 14.414 4.81441L14.4147 4.81462L14.4162 4.81506L14.4196 4.81604L14.4273 4.81835L14.4471 4.82451C14.4622 4.82934 14.481 4.83562 14.5035 4.84358C14.5484 4.85952 14.6077 4.88218 14.6805 4.91339C14.8262 4.97582 15.0253 5.07224 15.2698 5.21695C15.7593 5.50664 16.4275 5.98781 17.2124 6.77279C17.9974 7.55776 18.4786 8.22595 18.7683 8.71541C18.913 8.95992 19.0094 9.15899 19.0718 9.30467C19.103 9.37748 19.1257 9.43683 19.1416 9.48175C19.1496 9.5042 19.1559 9.52303 19.1607 9.5381L19.1669 9.55789L19.1692 9.56564L19.1702 9.56898L19.1706 9.57051L19.1708 9.57124C19.1709 9.5716 19.171 9.57195 18.4499 9.77799L19.171 9.57195C19.2848 9.97023 19.0542 10.3853 18.6559 10.4991C18.261 10.612 17.8496 10.3862 17.7317 9.99414L17.728 9.98336C17.7227 9.96833 17.7116 9.93875 17.6931 9.89555C17.6561 9.80921 17.589 9.66798 17.4774 9.47939C17.2544 9.10265 16.8517 8.5334 16.1518 7.83345C15.4518 7.13349 14.8826 6.73079 14.5058 6.50782C14.3172 6.3962 14.176 6.32911 14.0897 6.2921C14.0465 6.27359 14.0169 6.26256 14.0019 6.25722L13.9911 6.25353C13.599 6.13565 13.3733 5.7242 13.4861 5.32931Z" stroke="#08394e" stroke-width="0.5" fill="#08394e"></path> </g></svg>RESPONSÁVEL:</span>
+            <input type="text" class="input-card input-card-save" data-field="responsavel" style="text-align: left; font-weight: 400; padding: 0px 4px 3px 0px;" placeholder="•••">
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTÃO FLUTUANTE (FAB) PARA AS PÁGINAS 1, 2 E 3 -->
+  <button class="fab" id="fab-button" onclick="openAddModal()"><svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
+
+  <!-- SELETOR OCULTO DE DATA/HORA DA PÁGINA 4 -->
+  <input type="datetime-local" id="hidden-date-picker" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;">
+
+    <!-- MODAL DE AGENDAMENTO (PÁGINAS 1 E 2) -->
+  <div class="modal" id="modal-schedule">
+    <div class="modal-body">
+      <div class="modal-header">
+        <h3 id="modal-schedule-title">Agendar Orador</h3>
+        <button onclick="closeModals()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+      </div>
+      <form id="form-schedule" onsubmit="handleSaveSchedule(event)">
+        <input type="hidden" id="schedule-id">
+
+        <!-- 1. Nome do Orador com Autocompletar -->
+<div class="form-group">
+  <label>Nome do Orador</label>
+  <input type="text" id="field-name" class="form-control" list="datalist-oradores" placeholder="Ex: Daniel Faria" autocomplete="off" required>
+  <datalist id="datalist-oradores"></datalist>
+</div>
+
+
+        <!-- 2. Congregação -->
+        <div class="form-group">
+          <label>Congregação</label>
+          <input type="text" id="field-congregation" class="form-control" placeholder="Ex: Parque das Nações" required>
+        </div>
+
+        <!-- 3. Data e Número do Esboço Lado a Lado -->
+        <div style="display: flex; gap: 10px;">
+          <div class="form-group" style="flex: 1;">
+            <label>Data</label>
+            <input type="date" id="field-date" class="form-control" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Número do Esboço</label>
+            <input type="number" id="field-number" class="form-control" placeholder="Ex: 175" required>
+          </div>
+        </div>
+
+        <!-- 4. Tema do Esboço -->
+        <div class="form-group">
+          <label>Tema do Esboço</label>
+          <input type="text" id="field-theme" class="form-control" placeholder="Ex: O que prova que a Bíblia é autêntica?" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Salvar Agendamento</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- MODAL DE ORADOR LOCAL (PÁGINA 3) -->
+  <div class="modal" id="modal-speaker">
+    <div class="modal-body">
+      <div class="modal-header">
+        <h3 id="modal-speaker-title">Cadastrar Orador Local</h3>
+        <button onclick="closeModals()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+      </div>
+      <form id="form-speaker" onsubmit="handleSaveSpeaker(event)">
+        <input type="hidden" id="speaker-id">
+        
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" id="speaker-name" class="form-control" placeholder="Ex: João Batista" required>
+        </div>
+
+        <div class="form-group">
+          <label>Esboços Preparados (separados por vírgula)</label>
+          <input type="text" id="speaker-outlines" class="form-control" placeholder="Ex: 1, 15, 58, 175">
+        </div>
+
+        <div class="form-group">
+          <label>Data do Último Discurso</label>
+          <input type="date" id="speaker-last-date" class="form-control">
+        </div>
+
+        <button type="submit" class="btn-submit">Salvar Orador</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE BACKUP E RESTAURAÇÃO -->
+  <div class="modal" id="modal-backup">
+    <div class="modal-body">
+      <div class="modal-header">
+        <h3>Backup e Restauração</h3>
+        <button onclick="closeModals()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+      </div>
+
+      <div class="backup-option">
+        <p><strong>1. Salvar Backup (Baixar Arquivo)</strong><br>Gera um arquivo de segurança que você pode salvar no Google Drive ou WhatsApp.</p>
+        <button class="btn-secondary" onclick="exportBackupJSON()">📥 Baixar Backup JSON</button>
+      </div>
+
+      <div class="backup-option">
+        <p><strong>2. Restaurar Dados</strong><br>Selecione um arquivo de backup (.json) para restaurar suas informações.</p>
+        <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="importBackupJSON(event)">
+        <button class="btn-secondary" onclick="document.getElementById('import-file-input').click()">📤 Carregar Arquivo JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- ESTADO GLOBAL DA APLICAÇÃO ---
+    let currentPageIndex = 0; // 0 = Enviar, 1 = Receber, 2 = Oradores, 3 = Discurso Público
+    
+    // Datas independentes para cada página
+    let dateEnviar = new Date(2026, 8, 1);  // Setembro de 2026
+    let dateReceber = new Date(2026, 8, 1); // Setembro de 2026
+
+    const titulosPaginas = ['Enviar Oradores', 'Receber Oradores', 'Oradores Locais', 'Discurso Público'];
+
+    let scheduleEnviar = [];
+    let scheduleReceber = [];
+    let registeredSpeakers = [];
+
+    // --- ELEMENTOS DO DOM ---
+    const viewport = document.getElementById('carousel-viewport');
+    const navButtons = document.querySelectorAll('.tab-btn');
+    const appTitle = document.getElementById('app-title');
+    const fabButton = document.getElementById('fab-button');
+
+        // --- FUNÇÃO DE MOVIMENTO DO INDICADOR FLUIDO ---
+    function moverIndicador(index) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const indicator = document.getElementById('tab-indicator');
+      const activeTab = tabs[index];
+
+      if (activeTab && indicator) {
+        indicator.style.left = `${activeTab.offsetLeft}px`;
+        indicator.style.width = `${activeTab.offsetWidth}px`;
+        indicator.style.bottom = `0px`; // ou indicator.style.top = `${activeTab.offsetTop + activeTab.offsetHeight}px`;
+      }
+    }
+
+    // --- HELPER DE FORMATAÇÃO LOCAL DE ANO/MÊS ---
+    function getYearMonthKey(dateObj) {
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+      return `${year}-${month}`;
+    }
+
+    // --- CONTROLE DE PÁGINAS E SLIDES ---
+function mudarPagina(index) {
+  // ✅ APENAS manda a tela rolar suavemente. O evento de 'scroll' fará o resto!
+  viewport.scrollTo({
+    left: index * viewport.offsetWidth, // Trocado innerWidth por offsetWidth
+    behavior: 'smooth'
+  });
+}
+
+
+    // --- ATUALIZAÇÃO DA UI AO MUDAR DE PÁGINA ---
+function atualizarUI() {
+  navButtons.forEach((btn, i) => {
+    btn.classList.toggle('active', i === currentPageIndex);
+  });
+
+  // Oculta/Exibe o botão flutuante apenas na Página 4 (Designação)
+  if (currentPageIndex === 3) {
+    fabButton.style.display = 'none';
+  } else {
+    fabButton.style.display = 'flex';
+  }
+}
+
+// --- DETECTAR DESLIZE (SWIPE) E MOVER INDICADOR ---
+viewport.addEventListener('scroll', () => {
+  // Pega o progresso real e aplica a TRAVA DE SEGURANÇA
+  const rawProgress = viewport.scrollLeft / viewport.offsetWidth;
+  const scrollProgress = Math.max(0, Math.min(3, rawProgress));
+  
+  const newIndex = Math.round(scrollProgress);
+
+  // Atualiza botões ativos e FAB quando muda de página
+  if (newIndex !== currentPageIndex && newIndex >= 0 && newIndex <= 3) {
+    currentPageIndex = newIndex;
+
+    navButtons.forEach((btn, i) => {
+      btn.classList.toggle('active', i === currentPageIndex);
+    });
+
+    fabButton.style.display = (currentPageIndex === 3) ? 'none' : 'flex';
+    render();
+  }
+
+  // Move o indicador líquido em tempo real de acordo com o dedo
+  const currentTab = navButtons[Math.floor(scrollProgress)];
+  const nextTab = navButtons[Math.ceil(scrollProgress)];
+
+  if (currentTab && nextTab) {
+    const factor = scrollProgress % 1;
+    const currentLeft = currentTab.offsetLeft;
+    const nextLeft = nextTab.offsetLeft;
+    const currentWidth = currentTab.offsetWidth;
+    const nextWidth = nextTab.offsetWidth;
+
+    const indicator = document.getElementById('tab-indicator');
+    if (indicator) {
+      indicator.style.left = `${currentLeft + (nextLeft - currentLeft) * factor}px`;
+      indicator.style.width = `${currentWidth + (nextWidth - currentWidth) * factor}px`;
+    }
+  }
+});
+
+
+
+
+    // --- CARREGAR E SALVAR DADOS NO LOCALSTORAGE ---
+    function loadStorageData() {
+      const savedReceber = localStorage.getItem('app_oradores_receber');
+      const savedEnviar = localStorage.getItem('app_oradores_enviar');
+      const savedSpeakers = localStorage.getItem('app_oradores_speakers');
+
+      if (savedReceber) scheduleReceber = JSON.parse(savedReceber);
+      else {
+        scheduleReceber = [
+          { id: 1, date: '2026-09-06', congregation: 'Vila Luzita', name: 'Renan Moreira', number: '58', theme: 'Quem são os verdadeiros seguidores de Cristo?' }
+        ];
+      }
+
+      if (savedEnviar) scheduleEnviar = JSON.parse(savedEnviar);
+      else {
+        scheduleEnviar = [
+          { id: 2, date: '2026-09-13', congregation: 'Parque das Nações', name: 'Daniel Faria', number: '175', theme: 'O que prova que a Bíblia é autêntica?' }
+        ];
+      }
+
+      if (savedSpeakers) registeredSpeakers = JSON.parse(savedSpeakers);
+      else {
+        registeredSpeakers = [
+          { id: 101, name: 'Daniel Faria', outlines: '175, 180, 58', lastTalkDate: '2026-04-12' },
+          { id: 102, name: 'João Batista', outlines: '12, 49, 100', lastTalkDate: '2026-01-15' },
+          { id: 103, name: 'Adriano Ivan', outlines: '98, 131', lastTalkDate: '' }
+        ];
+      }
+    }
+
+    function saveStorageData() {
+      localStorage.setItem('app_oradores_receber', JSON.stringify(scheduleReceber));
+      localStorage.setItem('app_oradores_enviar', JSON.stringify(scheduleEnviar));
+      localStorage.setItem('app_oradores_speakers', JSON.stringify(registeredSpeakers));
+    }
+
+    // --- NAVEGAÇÃO DE MESES INDEPENDENTES ---
+    function changeMonth(offset, page) {
+      if (page === 'enviar') {
+        dateEnviar.setMonth(dateEnviar.getMonth() + offset);
+      } else if (page === 'receber') {
+        dateReceber.setMonth(dateReceber.getMonth() + offset);
+      }
+      render();
+    }
+
+    function formatMonthYear(date) {
+      const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      return `${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    function formatDateBR(dateStr) {
+      if (!dateStr || dateStr.split('-').length !== 3) return "Nunca discursou";
+      const [year, month, day] = dateStr.split('-');
+      return `${day}/${month}/${year}`;
+    }
+
+    // --- RENDERIZAÇÃO DAS PÁGINAS ---
+    function atualizarSugestoesOradores() {
+  const datalist = document.getElementById('datalist-oradores');
+  if (!datalist) return;
+  datalist.innerHTML = registeredSpeakers.map(sp => `<option value="${sp.name}">`).join('');
+}
+
+// --- RENDERIZAÇÃO DAS PÁGINAS ---
+function render() {
+  // Atualiza as sugestões do autocomplete com base nos oradores cadastrados
+  atualizarSugestoesOradores();
+
+  // Página 1: Enviar
+  document.getElementById('month-display-enviar').innerText = formatMonthYear(dateEnviar);
+  const yearMonthEnviar = getYearMonthKey(dateEnviar);
+  renderScheduleList('list-enviar', scheduleEnviar.filter(item => item.date.startsWith(yearMonthEnviar)));
+
+  // Página 2: Receber
+  document.getElementById('month-display-receber').innerText = formatMonthYear(dateReceber);
+  const yearMonthReceber = getYearMonthKey(dateReceber);
+  renderScheduleList('list-receber', scheduleReceber.filter(item => item.date.startsWith(yearMonthReceber)));
+
+  // Página 3: Oradores
+  renderSpeakersList();
+}
+
+    function renderScheduleList(containerId, items) {
+      const container = document.getElementById(containerId);
+      if (items.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color: var(--text-muted); margin-top:20px; font-weight:600; font-size: 0.9rem;">Nenhum agendamento para este mês.</p>`;
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        const day = item.date.split('-')[2];
+        return `
+          <div class="card-funcao clickable" onclick="openEditScheduleModal(${item.id})">
+            <div class="card-date-badge">DIA<br>${day}</div>
+            <div class="card-details">
+              <div class="card-title">${item.name}</div>
+              <div class="card-extra">Congregação: ${item.congregation}</div>
+              <div class="card-subtitle">Nº ${item.number} - ${item.theme}</div>
+            </div>
+            <button class="btn-delete" onclick="event.stopPropagation(); deleteSchedule(${item.id})">🗑️</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSpeakersList() {
+      const container = document.getElementById('list-oradores');
+      
+      if (registeredSpeakers.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color: var(--text-muted); margin-top:20px; font-weight:600; font-size: 0.9rem;">Nenhum orador cadastrado.</p>`;
+        return;
+      }
+
+      const sortedSpeakers = [...registeredSpeakers].sort((a, b) => {
+        if (!a.lastTalkDate && !b.lastTalkDate) return 0;
+        if (!a.lastTalkDate) return -1;
+        if (!b.lastTalkDate) return 1;
+        return new Date(a.lastTalkDate) - new Date(b.lastTalkDate);
+      });
+
+      container.innerHTML = sortedSpeakers.map(sp => `
+        <div class="card-funcao clickable" onclick="openEditSpeakerModal(${sp.id})">
+          <div class="card-details" style="margin-left:0;">
+            <div class="card-title">${sp.name}</div>
+            <div class="card-subtitle">Último discurso: <strong>${formatDateBR(sp.lastTalkDate)}</strong></div>
+            <div class="outlines-badge">Esboços: ${sp.outlines || 'Nenhum'}</div>
+          </div>
+          <button class="btn-delete" onclick="event.stopPropagation(); deleteSpeaker(${sp.id})">🗑️</button>
+        </div>
+      `).join('');
+    }
+
+    // --- MANIPULAÇÃO DE MODAIS E FORMULÁRIOS ---
+    function openAddModal() {
+      if (currentPageIndex === 2) {
+        document.getElementById('modal-speaker-title').innerText = 'Cadastrar Orador Local';
+        document.getElementById('speaker-id').value = '';
+        document.getElementById('form-speaker').reset();
+        document.getElementById('modal-speaker').classList.add('active');
+      } else {
+        document.getElementById('modal-schedule-title').innerText = 
+          currentPageIndex === 0 ? 'Agendar Envio' : 'Agendar Recebimento';
+        document.getElementById('schedule-id').value = '';
+        document.getElementById('form-schedule').reset();
+        document.getElementById('modal-schedule').classList.add('active');
+      }
+    }
+
+    function openEditScheduleModal(id) {
+      const list = (currentPageIndex === 0) ? scheduleEnviar : scheduleReceber;
+      const item = list.find(i => Number(i.id) === Number(id));
+      if (!item) return;
+
+      document.getElementById('modal-schedule-title').innerText = 
+        currentPageIndex === 0 ? 'Editar Envio' : 'Editar Recebimento';
+
+      document.getElementById('schedule-id').value = item.id;
+      document.getElementById('field-date').value = item.date;
+      document.getElementById('field-congregation').value = item.congregation;
+      document.getElementById('field-name').value = item.name;
+      document.getElementById('field-number').value = item.number;
+      document.getElementById('field-theme').value = item.theme;
+
+      document.getElementById('modal-schedule').classList.add('active');
+    }
+
+    function openEditSpeakerModal(id) {
+      const speaker = registeredSpeakers.find(s => Number(s.id) === Number(id));
+      if (!speaker) return;
+
+      document.getElementById('modal-speaker-title').innerText = 'Editar Orador Local';
+      document.getElementById('speaker-id').value = speaker.id;
+      document.getElementById('speaker-name').value = speaker.name;
+      document.getElementById('speaker-outlines').value = speaker.outlines || '';
+      document.getElementById('speaker-last-date').value = speaker.lastTalkDate || '';
+
+      document.getElementById('modal-speaker').classList.add('active');
+    }
+
+    function closeModals() {
+      document.getElementById('modal-schedule').classList.remove('active');
+      document.getElementById('modal-speaker').classList.remove('active');
+      document.getElementById('modal-backup').classList.remove('active');
+    }
+
+    // --- SALVAR AGENDAMENTO E ATUALIZAR DATA DO ORADOR ---
+function handleSaveSchedule(e) {
+  e.preventDefault();
+  const idInput = document.getElementById('schedule-id').value;
+  const activeList = (currentPageIndex === 0) ? scheduleEnviar : scheduleReceber;
+
+  const date = document.getElementById('field-date').value;
+  const congregation = document.getElementById('field-congregation').value;
+  const name = document.getElementById('field-name').value.trim();
+  const number = document.getElementById('field-number').value;
+  const theme = document.getElementById('field-theme').value;
+
+  if (idInput) {
+    const item = activeList.find(i => Number(i.id) === Number(idInput));
+    if (item) {
+      item.date = date;
+      item.congregation = congregation;
+      item.name = name;
+      item.number = number;
+      item.theme = theme;
+    }
+  } else {
+    activeList.push({
+      id: Date.now(),
+      date, congregation, name, number, theme
+    });
+  }
+
+  // SE FOR A PÁGINA "ENVIAR" (0), ATUALIZA A DATA DO ORADOR LOCAL AUTOMATICAMENTE
+  if (currentPageIndex === 0) {
+    const oradorLocal = registeredSpeakers.find(s => s.name.toLowerCase().trim() === name.toLowerCase());
+    if (oradorLocal) {
+      // Atualiza a data do último discurso se a nova data for mais recente ou se ainda não houver data
+      if (!oradorLocal.lastTalkDate || new Date(date) >= new Date(oradorLocal.lastTalkDate)) {
+        oradorLocal.lastTalkDate = date;
+      }
+    }
+  }
+
+  saveStorageData();
+  closeModals();
+  render();
+}
+
+    function handleSaveSpeaker(e) {
+      e.preventDefault();
+      const idInput = document.getElementById('speaker-id').value;
+      const name = document.getElementById('speaker-name').value;
+      const outlines = document.getElementById('speaker-outlines').value;
+      const lastTalkDate = document.getElementById('speaker-last-date').value;
+
+      if (idInput) {
+        const speaker = registeredSpeakers.find(s => Number(s.id) === Number(idInput));
+        if (speaker) {
+          speaker.name = name;
+          speaker.outlines = outlines;
+          speaker.lastTalkDate = lastTalkDate;
         }
-    </script>
+      } else {
+        registeredSpeakers.push({
+          id: Date.now(),
+          name, outlines, lastTalkDate
+        });
+      }
+
+      saveStorageData();
+      closeModals();
+      render();
+    }
+
+    function deleteSchedule(id) {
+      if (confirm('Deseja excluir este agendamento?')) {
+        scheduleEnviar = scheduleEnviar.filter(i => Number(i.id) !== Number(id));
+        scheduleReceber = scheduleReceber.filter(i => Number(i.id) !== Number(id));
+        saveStorageData();
+        render();
+      }
+    }
+
+    function deleteSpeaker(id) {
+      if (confirm('Deseja excluir este orador?')) {
+        registeredSpeakers = registeredSpeakers.filter(s => Number(s.id) !== Number(id));
+        saveStorageData();
+        render();
+      }
+    }
+
+  // --- BACKUP E RESTAURAÇÃO DE DADOS ---
+    function openBackupModal() {
+      document.getElementById('modal-backup').classList.add('active');
+    }
+
+    function exportBackupJSON() {
+      const backupData = {
+        version: "1.0",
+        exportDate: new Date().toISOString(),
+        scheduleReceber,
+        scheduleEnviar,
+        registeredSpeakers
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      const today = new Date().toISOString().slice(0, 10);
+      
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `backup-oradores-${today}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importBackupJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+
+          if (importedData.scheduleReceber && importedData.scheduleEnviar && importedData.registeredSpeakers) {
+            scheduleReceber = importedData.scheduleReceber;
+            scheduleEnviar = importedData.scheduleEnviar;
+            registeredSpeakers = importedData.registeredSpeakers;
+
+            saveStorageData();
+            render();
+            closeModals();
+            alert('✅ Backup restaurado com sucesso!');
+          } else {
+            alert('⚠️ Arquivo de backup inválido.');
+          }
+        } catch (err) {
+          alert('❌ Erro ao ler o arquivo JSON.');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // --- LÓGICA DA PÁGINA 4 (DISCURSO PÚBLICO & GOOGLE SHEETS) ---
+    function initDiscursoPublico() {
+      const displayInput = document.getElementById('input-data-custom');
+      const hiddenPicker = document.getElementById('hidden-date-picker');
+      const inputEsboco = document.getElementById('input-esboco');
+      const areaTema = document.getElementById('area-tema');
+      const txEndereco = document.getElementById('textarea-endereco');
+      
+      const mesesSimplificados = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+      // Seletor de Data/Hora Customizado
+      displayInput.addEventListener('click', function() {
+        if (typeof hiddenPicker.showPicker === 'function') hiddenPicker.showPicker();
+        else hiddenPicker.focus();
+      });
+
+      hiddenPicker.addEventListener('change', function() {
+        if (this.value && this.value.includes('T')) {
+          const partesGerais = this.value.split('T');
+          const dataPartes = partesGerais[0].split('-');
+          const horaPartes = partesGerais[1].split(':');
+
+          if (dataPartes.length === 3 && horaPartes.length >= 2) {
+            const ano = parseInt(dataPartes[0], 10);
+            const mes = parseInt(dataPartes[1], 10) - 1;
+            const dia = parseInt(dataPartes[2], 10);
+            const hora = parseInt(horaPartes[0], 10);
+            const minuto = parseInt(horaPartes[1], 10);
+
+            const dataObj = new Date(ano, mes, dia, hora, minuto);
+            
+            const horaStr = String(hora).padStart(2, '0');
+            const minutoStr = String(minuto).padStart(2, '0');
+
+            displayInput.value = `${dia} de ${mesesSimplificados[mes]} - ${diasSemana[dataObj.getDay()]} ${horaStr}h${minutoStr}`;
+          }
+        } else {
+          displayInput.value = '';
+        }
+        salvarDadosPagina4();
+      });
+
+      // Redimensionamento do Endereço
+      function ajustarAlturaEndereco() {
+        txEndereco.style.height = 'auto';
+        txEndereco.style.height = txEndereco.scrollHeight + 'px';
+      }
+      txEndereco.addEventListener('input', ajustarAlturaEndereco);
+
+      // Busca na Planilha
+      let bancoDeTemas = {};
+      const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGAcOIMZpt2HD2XMZWqEnV5QjF7322mxVRjI-s3hsGsSzAw6T45pGhCczn0tNzQUQeYcnQ4R3SCyAS/pub?gid=1453510933&single=true&output=tsv";
+
+      async function carregarDadosPlanilha() {
+        try {
+          const resposta = await fetch(sheetUrl);
+          const tsvTexto = await resposta.text();
+          const linhas = tsvTexto.split(/\r?\n/);
+          
+          linhas.forEach(linha => {
+            const colunas = linha.split('\t');
+            if (colunas.length >= 2) {
+              const numero = colunas[0].trim();
+              const temaOriginal = colunas[1].trim();
+              if (numero && temaOriginal) bancoDeTemas[numero] = temaOriginal;
+            }
+          });
+          atualizarTemaComEsboco();
+        } catch (erro) {
+          console.error("Erro ao carregar planilha: ", erro);
+        }
+      }
+
+      function atualizarTemaComEsboco() {
+        const numeroDigitado = inputEsboco.value.trim();
+        if (numeroDigitado === "") areaTema.textContent = "•••";
+        else if (bancoDeTemas[numeroDigitado]) areaTema.textContent = bancoDeTemas[numeroDigitado];
+        else areaTema.textContent = "Esboço não cadastrado";
+        
+        localStorage.setItem('form_designacao_tema', areaTema.textContent);
+      }
+
+      inputEsboco.addEventListener('input', atualizarTemaComEsboco);
+
+      // Persistência de Dados da Página 4
+      const inputsSalvar = document.querySelectorAll('.input-card-save');
+      
+      function salvarDadosPagina4() {
+        inputsSalvar.forEach(input => {
+          const campo = input.getAttribute('data-field');
+          if (campo && input.value !== undefined) {
+            localStorage.setItem('form_designacao_' + campo, input.value);
+          }
+        });
+        localStorage.setItem('form_designacao_picker_date', hiddenPicker.value);
+      }
+
+      function carregarDadosPagina4() {
+        inputsSalvar.forEach(input => {
+          const campo = input.getAttribute('data-field');
+          if (campo && input.value !== undefined) {
+            const val = localStorage.getItem('form_designacao_' + campo);
+            if (val !== null) input.value = val;
+          }
+        });
+
+        const pickerSalvo = localStorage.getItem('form_designacao_picker_date');
+        if (pickerSalvo) hiddenPicker.value = pickerSalvo;
+
+        const temaSalvo = localStorage.getItem('form_designacao_tema');
+        if (temaSalvo) areaTema.textContent = temaSalvo;
+
+        ajustarAlturaEndereco();
+      }
+
+      inputsSalvar.forEach(input => input.addEventListener('input', salvarDadosPagina4));
+
+      carregarDadosPagina4();
+      carregarDadosPlanilha();
+    }
+
+        // --- INICIALIZAÇÃO GERAL ---
+    document.addEventListener('DOMContentLoaded', () => {
+      loadStorageData();
+      atualizarUI();
+      initDiscursoPublico();
+      
+      // ✅ ADICIONE ESTA LINHA: Desenha os dados na tela logo na abertura
+      render();
+
+      setTimeout(() => {
+        moverIndicador(currentPageIndex);
+      }, 50);
+    });
+
+
+    // Registra Service Worker PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker Registrado!', reg))
+          .catch(err => console.error('Erro SW:', err));
+      });
+    }
+  </script>
 </body>
 </html>
