@@ -114,13 +114,15 @@
     /* --- INDICADOR FLUIDO COM CANTOS INVERTIDOS (CÔNCAVOS) --- */
 .tab-indicator {
   position: absolute;
-  bottom: 0;
-  height: 44px;
+  top: 0;
+  bottom: 0px;
+  left: 0;
+  height: 100%;
   background-color: var(--bg-main);
   border-radius: 14px 14px 0 0;
   z-index: 1;
   pointer-events: none;
-  transition: left 0.01s ease, btn 0.01s ease;
+  will-change: transform, width;
 }
 
 
@@ -780,18 +782,21 @@
     const appTitle = document.getElementById('app-title');
     const fabButton = document.getElementById('fab-button');
 
-        // --- FUNÇÃO DE MOVIMENTO DO INDICADOR FLUIDO ---
+           // --- FUNÇÃO DE MOVIMENTO DO INDICADOR FLUIDO ---
     function moverIndicador(index) {
       const tabs = document.querySelectorAll('.tab-btn');
       const indicator = document.getElementById('tab-indicator');
       const activeTab = tabs[index];
 
       if (activeTab && indicator) {
-        indicator.style.left = `${activeTab.offsetLeft}px`;
-        indicator.style.width = `${activeTab.offsetWidth}px`;
-        indicator.style.bottom = `0px`; // ou indicator.style.top = `${activeTab.offsetTop + activeTab.offsetHeight}px`;
+        const posicaoX = activeTab.offsetLeft;
+        const larguraTab = activeTab.offsetWidth;
+
+        indicator.style.transform = `translateX(${posicaoX}px)`;
+        indicator.style.width = `${larguraTab}px`;
       }
     }
+
 
     // --- HELPER DE FORMATAÇÃO LOCAL DE ANO/MÊS ---
     function getYearMonthKey(dateObj) {
@@ -825,46 +830,57 @@ function atualizarUI() {
 }
 
 // --- DETECTAR DESLIZE (SWIPE) E MOVER INDICADOR ---
+let isTicking = false; // Controle para não sobrecarregar o navegador
+
 viewport.addEventListener('scroll', () => {
-  // Pega o progresso real e aplica a TRAVA DE SEGURANÇA
-  const rawProgress = viewport.scrollLeft / viewport.offsetWidth;
-  const scrollProgress = Math.max(0, Math.min(3, rawProgress));
-  
-  const newIndex = Math.round(scrollProgress);
+  if (!isTicking) {
+    window.requestAnimationFrame(() => {
+      // Pega o progresso real e aplica a trava
+      const rawProgress = viewport.scrollLeft / viewport.offsetWidth;
+      const scrollProgress = Math.max(0, Math.min(3, rawProgress));
+      
+      const newIndex = Math.round(scrollProgress);
 
-  // Atualiza botões ativos e FAB quando muda de página
-  if (newIndex !== currentPageIndex && newIndex >= 0 && newIndex <= 3) {
-    currentPageIndex = newIndex;
+      // Atualiza botões ativos e FAB quando muda de página
+      if (newIndex !== currentPageIndex && newIndex >= 0 && newIndex <= 3) {
+        currentPageIndex = newIndex;
 
-    navButtons.forEach((btn, i) => {
-      btn.classList.toggle('active', i === currentPageIndex);
+        navButtons.forEach((btn, i) => {
+          btn.classList.toggle('active', i === currentPageIndex);
+        });
+
+        fabButton.style.display = (currentPageIndex === 3) ? 'none' : 'flex';
+        render();
+      }
+
+      // Move o indicador de forma acelerada pela GPU (transform)
+      const currentTab = navButtons[Math.floor(scrollProgress)];
+      const nextTab = navButtons[Math.ceil(scrollProgress)];
+
+      if (currentTab && nextTab) {
+        const factor = scrollProgress % 1;
+        const currentLeft = currentTab.offsetLeft;
+        const nextLeft = nextTab.offsetLeft;
+        const currentWidth = currentTab.offsetWidth;
+        const nextWidth = nextTab.offsetWidth;
+
+        const indicator = document.getElementById('tab-indicator');
+        if (indicator) {
+          // Usa translateX em vez de left para 120Hz cravados
+          const posicaoX = currentLeft + (nextLeft - currentLeft) * factor;
+          const larguraAtual = currentWidth + (nextWidth - currentWidth) * factor;
+          
+          indicator.style.transform = `translateX(${posicaoX}px)`;
+          indicator.style.width = `${larguraAtual}px`;
+        }
+      }
+      
+      isTicking = false; // Libera para o próximo quadro
     });
-
-    fabButton.style.display = (currentPageIndex === 3) ? 'none' : 'flex';
-    render();
-  }
-
-  // Move o indicador líquido em tempo real de acordo com o dedo
-  const currentTab = navButtons[Math.floor(scrollProgress)];
-  const nextTab = navButtons[Math.ceil(scrollProgress)];
-
-  if (currentTab && nextTab) {
-    const factor = scrollProgress % 1;
-    const currentLeft = currentTab.offsetLeft;
-    const nextLeft = nextTab.offsetLeft;
-    const currentWidth = currentTab.offsetWidth;
-    const nextWidth = nextTab.offsetWidth;
-
-    const indicator = document.getElementById('tab-indicator');
-    if (indicator) {
-      indicator.style.left = `${currentLeft + (nextLeft - currentLeft) * factor}px`;
-      indicator.style.width = `${currentWidth + (nextWidth - currentWidth) * factor}px`;
-    }
+    
+    isTicking = true; // Trava até o quadro ser desenhado
   }
 });
-
-
-
 
     // --- CARREGAR E SALVAR DADOS NO LOCALSTORAGE ---
     function loadStorageData() {
