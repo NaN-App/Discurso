@@ -772,11 +772,12 @@
 
   <script>
     // --- ESTADO GLOBAL DA APLICAÇÃO ---
-    let currentPageIndex = 0; // 0 = Enviar, 1 = Receber, 2 = Oradores, 3 = Discurso Público
+    let currentPageIndex = 0;
     
-    // Datas independentes para cada página
-    let dateEnviar = new Date(2026, 8, 1);  // Setembro de 2026
-    let dateReceber = new Date(2026, 8, 1); // Setembro de 2026
+    // 0 = Enviar, 1 = Receber, 2 = Oradores, 3 = Discurso Público
+   
+    // Data unificada para sincronizar os meses das abas de Enviar e Receber
+let currentDate = new Date(2026, 8, 1);  // Setembro de 2026
 
     const titulosPaginas = ['Enviar Oradores', 'Receber Oradores', 'Oradores Locais', 'Discurso Público'];
 
@@ -926,15 +927,12 @@ viewport.addEventListener('scroll', () => {
       localStorage.setItem('app_oradores_speakers', JSON.stringify(registeredSpeakers));
     }
 
-    // --- NAVEGAÇÃO DE MESES INDEPENDENTES ---
-    function changeMonth(offset, page) {
-      if (page === 'enviar') {
-        dateEnviar.setMonth(dateEnviar.getMonth() + offset);
-      } else if (page === 'receber') {
-        dateReceber.setMonth(dateReceber.getMonth() + offset);
-      }
-      render();
-    }
+    // --- NAVEGAÇÃO DE MESES SINCRONIZADA ---
+function changeMonth(offset, page) {
+  // Altera o mês na data única compartilhada pelas duas abas
+  currentDate.setMonth(currentDate.getMonth() + offset);
+  render();
+}
 
     function formatMonthYear(date) {
       const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -956,18 +954,19 @@ viewport.addEventListener('scroll', () => {
 
 // --- RENDERIZAÇÃO DAS PÁGINAS ---
 function render() {
-  // Atualiza as sugestões do autocomplete com base nos oradores cadastrados
   atualizarSugestoesOradores();
 
+  // O mês exibido e filtrado será o mesmo para "Enviar" e "Receber"
+  const mesFormatado = formatMonthYear(currentDate);
+  const yearMonthKey = getYearMonthKey(currentDate);
+
   // Página 1: Enviar
-  document.getElementById('month-display-enviar').innerText = formatMonthYear(dateEnviar);
-  const yearMonthEnviar = getYearMonthKey(dateEnviar);
-  renderScheduleList('list-enviar', scheduleEnviar.filter(item => item.date.startsWith(yearMonthEnviar)));
+  document.getElementById('month-display-enviar').innerText = mesFormatado;
+  renderScheduleList('list-enviar', scheduleEnviar.filter(item => item.date.startsWith(yearMonthKey)));
 
   // Página 2: Receber
-  document.getElementById('month-display-receber').innerText = formatMonthYear(dateReceber);
-  const yearMonthReceber = getYearMonthKey(dateReceber);
-  renderScheduleList('list-receber', scheduleReceber.filter(item => item.date.startsWith(yearMonthReceber)));
+  document.getElementById('month-display-receber').innerText = mesFormatado;
+  renderScheduleList('list-receber', scheduleReceber.filter(item => item.date.startsWith(yearMonthKey)));
 
   // Página 3: Oradores
   renderSpeakersList();
