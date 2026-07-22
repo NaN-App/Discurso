@@ -214,10 +214,10 @@
       justify-content: space-between;
       align-items: center;
       background: #FFFFFF;
-      padding: 8px 16px;
-      border-radius: 18px;
+      padding: 8px 25px;
+      border-radius: 20px;
       width: 100%;
-      max-width: 240px;
+      max-width: 250px;
       margin: 0 auto 12px auto;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
       flex-shrink: 0;
@@ -323,10 +323,10 @@
     .btn-delete {
       background: none;
       border: none;
-      color: var(--danger);
+      color: #222222;
       cursor: pointer;
-      font-size: 1rem;
-      padding: 4px 6px;
+      font-size: 2rem;
+      padding: 7px 7px;
     }
 
     /* --- CARTÃO ESPECÍFICO DA PÁGINA 4 (DISCURSO PÚBLICO) --- */
@@ -417,10 +417,11 @@
     /* --- MODAIS E BOTTOM SHEET --- */
     .modal {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0px;
+      top: 0; left: 0; right: 0;
+      bottom: 0px;
       background: rgba(0,0,0,0.5);
       display: none;
-      align-items: flex-end;
+      align-items: flex-top;
       z-index: 2000;
     }
 
@@ -430,13 +431,13 @@
 
     .modal-body {
       background: white;
-      width: 100%;
-      border-radius: 30px 30px 0 0;
-      padding: 20px;
-      max-height: 85vh;
+      width: 95%;
+      border-radius: 30px;
+      padding: 25px;
+      max-height: 52vh;
       overflow-y: auto;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
-      max-width: 600px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      max-width: 450px;
       margin: 0 auto;
     }
 
@@ -459,7 +460,7 @@
 
     .form-group label {
       display: block;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text-muted);
       margin-bottom: 4px;
@@ -469,8 +470,8 @@
       width: 100%;
       padding: 10px;
       border: 1px solid #cbd5e1;
-      border-radius: 15px;
-      font-size: 0.9rem;
+      border-radius: 18px;
+      font-size: 1rem;
       outline: none;
       color: var(--text-dark);
       background: #f8fafc;
@@ -568,9 +569,9 @@
     <!-- PÁGINA 1: ENVIAR ORADORES -->
     <div class="app-page-slide" id="slide-1">
       <div class="month-nav">
-        <button onclick="changeMonth(-1, 'enviar')" style= "padding: 5px 10px 0px 0px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124 c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844 L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412 c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008 c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788 C492,219.198,479.172,207.418,464.344,207.418z"></path> </g> </g> </g></svg></button>
+        <button onclick="changeMonth(-1, 'enviar')" style= "padding: 5px 10px 0px 0px;"><svg fill="#08394E" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124 c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844 L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412 c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008 c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788 C492,219.198,479.172,207.418,464.344,207.418z"></path> </g> </g> </g></svg></button>
         <span class="month-title" id="month-display-enviar">Setembro 2026</span>
-        <button onclick="changeMonth(1, 'enviar')" style= "padding: 5px 0px 0px 10px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve" stroke="#ffffff" stroke-width="0.0049200400000000005"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M484.14,226.886L306.46,49.202c-5.072-5.072-11.832-7.856-19.04-7.856c-7.216,0-13.972,2.788-19.044,7.856l-16.132,16.136 c-5.068,5.064-7.86,11.828-7.86,19.04c0,7.208,2.792,14.2,7.86,19.264L355.9,207.526H26.58C11.732,207.526,0,219.15,0,234.002 v22.812c0,14.852,11.732,27.648,26.58,27.648h330.496L252.248,388.926c-5.068,5.072-7.86,11.652-7.86,18.864 c0,7.204,2.792,13.88,7.86,18.948l16.132,16.084c5.072,5.072,11.828,7.836,19.044,7.836c7.208,0,13.968-2.8,19.04-7.872 l177.68-177.68c5.084-5.088,7.88-11.88,7.86-19.1C492.02,238.762,489.228,231.966,484.14,226.886z"></path> </g> </g> </g></svg></button>
+        <button onclick="changeMonth(1, 'enviar')" style= "padding: 5px 0px 0px 10px;"><svg fill="#08394E" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve" stroke="#ffffff" stroke-width="0.0049200400000000005"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M484.14,226.886L306.46,49.202c-5.072-5.072-11.832-7.856-19.04-7.856c-7.216,0-13.972,2.788-19.044,7.856l-16.132,16.136 c-5.068,5.064-7.86,11.828-7.86,19.04c0,7.208,2.792,14.2,7.86,19.264L355.9,207.526H26.58C11.732,207.526,0,219.15,0,234.002 v22.812c0,14.852,11.732,27.648,26.58,27.648h330.496L252.248,388.926c-5.068,5.072-7.86,11.652-7.86,18.864 c0,7.204,2.792,13.88,7.86,18.948l16.132,16.084c5.072,5.072,11.828,7.836,19.044,7.836c7.208,0,13.968-2.8,19.04-7.872 l177.68-177.68c5.084-5.088,7.88-11.88,7.86-19.1C492.02,238.762,489.228,231.966,484.14,226.886z"></path> </g> </g> </g></svg></button>
       </div>
       <div class="cards-list" id="list-enviar"></div>
     </div>
@@ -578,9 +579,9 @@
     <!-- PÁGINA 2: RECEBER ORADORES -->
     <div class="app-page-slide" id="slide-2">
       <div class="month-nav">
-        <button onclick="changeMonth(-1, 'receber')" style= "padding: 5px 10px 0px 0px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124 c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844 L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412 c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008 c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788 C492,219.198,479.172,207.418,464.344,207.418z"></path> </g> </g> </g></svg></button>
+        <button onclick="changeMonth(-1, 'receber')" style= "padding: 5px 10px 0px 0px;"><svg fill="#08394E" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124 c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844 L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412 c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008 c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788 C492,219.198,479.172,207.418,464.344,207.418z"></path> </g> </g> </g></svg></button>
         <span class="month-title" id="month-display-receber">Setembro 2026</span>
-        <button onclick="changeMonth(1, 'receber')" style= "padding: 5px 0px 0px 10px;"><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve" stroke="#ffffff" stroke-width="0.0049200400000000005"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M484.14,226.886L306.46,49.202c-5.072-5.072-11.832-7.856-19.04-7.856c-7.216,0-13.972,2.788-19.044,7.856l-16.132,16.136 c-5.068,5.064-7.86,11.828-7.86,19.04c0,7.208,2.792,14.2,7.86,19.264L355.9,207.526H26.58C11.732,207.526,0,219.15,0,234.002 v22.812c0,14.852,11.732,27.648,26.58,27.648h330.496L252.248,388.926c-5.068,5.072-7.86,11.652-7.86,18.864 c0,7.204,2.792,13.88,7.86,18.948l16.132,16.084c5.072,5.072,11.828,7.836,19.044,7.836c7.208,0,13.968-2.8,19.04-7.872 l177.68-177.68c5.084-5.088,7.88-11.88,7.86-19.1C492.02,238.762,489.228,231.966,484.14,226.886z"></path> </g> </g> </g></svg></button>
+        <button onclick="changeMonth(1, 'receber')" style= "padding: 5px 0px 0px 10px;"><svg fill="#08394E" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 492 492" xml:space="preserve" stroke="#ffffff" stroke-width="0.0049200400000000005"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M484.14,226.886L306.46,49.202c-5.072-5.072-11.832-7.856-19.04-7.856c-7.216,0-13.972,2.788-19.044,7.856l-16.132,16.136 c-5.068,5.064-7.86,11.828-7.86,19.04c0,7.208,2.792,14.2,7.86,19.264L355.9,207.526H26.58C11.732,207.526,0,219.15,0,234.002 v22.812c0,14.852,11.732,27.648,26.58,27.648h330.496L252.248,388.926c-5.068,5.072-7.86,11.652-7.86,18.864 c0,7.204,2.792,13.88,7.86,18.948l16.132,16.084c5.072,5.072,11.828,7.836,19.044,7.836c7.208,0,13.968-2.8,19.04-7.872 l177.68-177.68c5.084-5.088,7.88-11.88,7.86-19.1C492.02,238.762,489.228,231.966,484.14,226.886z"></path> </g> </g> </g></svg></button>
       </div>
       <div class="cards-list" id="list-receber"></div>
     </div>
@@ -695,7 +696,7 @@
         </div>
 
         <!-- 3. Data e Número do Esboço Lado a Lado -->
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 8px;">
           <div class="form-group" style="flex: 1;">
             <label>Data</label>
             <input type="date" id="field-date" class="form-control" required>
@@ -989,7 +990,7 @@ function render() {
               <div class="card-extra">Congregação: ${item.congregation}</div>
               <div class="card-subtitle">Nº ${item.number} - ${item.theme}</div>
             </div>
-            <button class="btn-delete" onclick="event.stopPropagation(); deleteSchedule(${item.id})">🗑️</button>
+            <button class="btn-delete" onclick="event.stopPropagation(); deleteSchedule(${item.id})">•</button>
           </div>
         `;
       }).join('');
@@ -1017,7 +1018,7 @@ function render() {
             <div class="card-subtitle">Último discurso: <strong>${formatDateBR(sp.lastTalkDate)}</strong></div>
             <div class="outlines-badge">Esboços: ${sp.outlines || 'Nenhum'}</div>
           </div>
-          <button class="btn-delete" onclick="event.stopPropagation(); deleteSpeaker(${sp.id})">🗑️</button>
+          <button class="btn-delete" onclick="event.stopPropagation(); deleteSpeaker(${sp.id})">•</button>
         </div>
       `).join('');
     }
@@ -1031,7 +1032,7 @@ function render() {
         document.getElementById('modal-speaker').classList.add('active');
       } else {
         document.getElementById('modal-schedule-title').innerText = 
-          currentPageIndex === 0 ? 'Agendar Envio' : 'Agendar Recebimento';
+          currentPageIndex === 0 ? 'Enviar' : 'Receber';
         document.getElementById('schedule-id').value = '';
         document.getElementById('form-schedule').reset();
         document.getElementById('modal-schedule').classList.add('active');
