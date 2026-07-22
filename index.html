@@ -597,7 +597,7 @@
         
         <div class="card-discurso">
           
-          <!-- Cabeçalho do Card -->
+         <!-- Cabeçalho do Card -->
           <span class="funcao-titulo">
             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#08394e"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" stroke="#08394E" stroke-width="2"></path><path d="M8 10.5H16" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path><path d="M8 14H13.5" stroke="#08394E" stroke-width="2" stroke-linecap="round"></path></svg>
             DISCURSO PÚBLICO
@@ -776,8 +776,7 @@
     
     // 0 = Enviar, 1 = Receber, 2 = Oradores, 3 = Discurso Público
    
-    // Data unificada para sincronizar os meses das abas de Enviar e Receber
-let currentDate = new Date(2026, 8, 1);  // Setembro de 2026
+    let currentDate = new Date();  // Hoje
 
     const titulosPaginas = ['Enviar Oradores', 'Receber Oradores', 'Oradores Locais', 'Discurso Público'];
 
@@ -785,13 +784,49 @@ let currentDate = new Date(2026, 8, 1);  // Setembro de 2026
     let scheduleReceber = [];
     let registeredSpeakers = [];
 
+    // --- VARIÁVEL GLOBAL PARA BANCO DE TEMAS (PLANILHA) ---
+    let bancoDeTemas = {};
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGAcOIMZpt2HD2XMZWqEnV5QjF7322mxVRjI-s3hsGsSzAw6T45pGhCczn0tNzQUQeYcnQ4R3SCyAS/pub?gid=1453510933&single=true&output=tsv";
+
+    async function carregarDadosPlanilha() {
+      try {
+        const resposta = await fetch(sheetUrl);
+        const tsvTexto = await resposta.text();
+        const linhas = tsvTexto.split(/\r?\n/);
+        
+        linhas.forEach(linha => {
+          const colunas = linha.split('\t');
+          if (colunas.length >= 2) {
+            const numero = colunas[0].trim();
+            const temaOriginal = colunas[1].trim();
+            if (numero && temaOriginal) bancoDeTemas[numero] = temaOriginal;
+          }
+        });
+        
+        // Atualiza elementos se já estiverem visíveis
+        const inputEsbocoP4 = document.getElementById('input-esboco');
+        if (inputEsbocoP4) {
+          const eventoInput = new Event('input');
+          inputEsbocoP4.dispatchEvent(eventoInput);
+        }
+
+        const fieldNumberModal = document.getElementById('field-number');
+        if (fieldNumberModal) {
+          const eventoInputModal = new Event('input');
+          fieldNumberModal.dispatchEvent(eventoInputModal);
+        }
+      } catch (erro) {
+        console.error("Erro ao carregar planilha: ", erro);
+      }
+    }
+
     // --- ELEMENTOS DO DOM ---
     const viewport = document.getElementById('carousel-viewport');
     const navButtons = document.querySelectorAll('.tab-btn');
     const appTitle = document.getElementById('app-title');
     const fabButton = document.getElementById('fab-button');
 
-           // --- FUNÇÃO DE MOVIMENTO DO INDICADOR FLUIDO ---
+    // --- FUNÇÃO DE MOVIMENTO DO INDICADOR FLUIDO ---
     function moverIndicador(index) {
       const tabs = document.querySelectorAll('.tab-btn');
       const indicator = document.getElementById('tab-indicator');
@@ -815,82 +850,74 @@ let currentDate = new Date(2026, 8, 1);  // Setembro de 2026
     }
 
     // --- CONTROLE DE PÁGINAS E SLIDES ---
-function mudarPagina(index) {
-  // ✅ APENAS manda a tela rolar suavemente. O evento de 'scroll' fará o resto!
-  viewport.scrollTo({
-    left: index * viewport.offsetWidth, // Trocado innerWidth por offsetWidth
-    behavior: 'smooth'
-  });
-}
-
+    function mudarPagina(index) {
+      viewport.scrollTo({
+        left: index * viewport.offsetWidth,
+        behavior: 'smooth'
+      });
+    }
 
     // --- ATUALIZAÇÃO DA UI AO MUDAR DE PÁGINA ---
-function atualizarUI() {
-  navButtons.forEach((btn, i) => {
-    btn.classList.toggle('active', i === currentPageIndex);
-  });
+    function atualizarUI() {
+      navButtons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === currentPageIndex);
+      });
 
-  // Oculta/Exibe o botão flutuante apenas na Página 4 (Designação)
-  if (currentPageIndex === 3) {
-    fabButton.style.display = 'none';
-  } else {
-    fabButton.style.display = 'flex';
-  }
-}
-
-// --- DETECTAR DESLIZE (SWIPE) E MOVER INDICADOR ---
-let isTicking = false; // Controle para não sobrecarregar o navegador
-
-viewport.addEventListener('scroll', () => {
-  if (!isTicking) {
-    window.requestAnimationFrame(() => {
-      // Pega o progresso real e aplica a trava
-      const rawProgress = viewport.scrollLeft / viewport.offsetWidth;
-      const scrollProgress = Math.max(0, Math.min(3, rawProgress));
-      
-      const newIndex = Math.round(scrollProgress);
-
-      // Atualiza botões ativos e FAB quando muda de página
-      if (newIndex !== currentPageIndex && newIndex >= 0 && newIndex <= 3) {
-        currentPageIndex = newIndex;
-
-        navButtons.forEach((btn, i) => {
-          btn.classList.toggle('active', i === currentPageIndex);
-        });
-
-        fabButton.style.display = (currentPageIndex === 3) ? 'none' : 'flex';
-        render();
+      if (currentPageIndex === 3) {
+        fabButton.style.display = 'none';
+      } else {
+        fabButton.style.display = 'flex';
       }
+    }
 
-      // Move o indicador de forma acelerada pela GPU (transform)
-      const currentTab = navButtons[Math.floor(scrollProgress)];
-      const nextTab = navButtons[Math.ceil(scrollProgress)];
+    // --- DETECTAR DESLIZE (SWIPE) E MOVER INDICADOR ---
+    let isTicking = false;
 
-      if (currentTab && nextTab) {
-        const factor = scrollProgress % 1;
-        const currentLeft = currentTab.offsetLeft;
-        const nextLeft = nextTab.offsetLeft;
-        const currentWidth = currentTab.offsetWidth;
-        const nextWidth = nextTab.offsetWidth;
-
-        const indicator = document.getElementById('tab-indicator');
-        if (indicator) {
-          // Usa translateX em vez de left para 120Hz cravados
-          const posicaoX = currentLeft + (nextLeft - currentLeft) * factor;
-          const larguraAtual = currentWidth + (nextWidth - currentWidth) * factor;
+    viewport.addEventListener('scroll', () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          const rawProgress = viewport.scrollLeft / viewport.offsetWidth;
+          const scrollProgress = Math.max(0, Math.min(3, rawProgress));
           
-          indicator.style.transform = `translateX(${posicaoX}px)`;
-          indicator.style.width = `${larguraAtual}px`;
-        }
-      }
-      
-      isTicking = false; // Libera para o próximo quadro
-    });
-    
-    isTicking = true; // Trava até o quadro ser desenhado
-  }
-});
+          const newIndex = Math.round(scrollProgress);
 
+          if (newIndex !== currentPageIndex && newIndex >= 0 && newIndex <= 3) {
+            currentPageIndex = newIndex;
+
+            navButtons.forEach((btn, i) => {
+              btn.classList.toggle('active', i === currentPageIndex);
+            });
+
+            fabButton.style.display = (currentPageIndex === 3) ? 'none' : 'flex';
+            render();
+          }
+
+          const currentTab = navButtons[Math.floor(scrollProgress)];
+          const nextTab = navButtons[Math.ceil(scrollProgress)];
+
+          if (currentTab && nextTab) {
+            const factor = scrollProgress % 1;
+            const currentLeft = currentTab.offsetLeft;
+            const nextLeft = nextTab.offsetLeft;
+            const currentWidth = currentTab.offsetWidth;
+            const nextWidth = nextTab.offsetWidth;
+
+            const indicator = document.getElementById('tab-indicator');
+            if (indicator) {
+              const posicaoX = currentLeft + (nextLeft - currentLeft) * factor;
+              const larguraAtual = currentWidth + (nextWidth - currentWidth) * factor;
+              
+              indicator.style.transform = `translateX(${posicaoX}px)`;
+              indicator.style.width = `${larguraAtual}px`;
+            }
+          }
+          
+          isTicking = false;
+        });
+        
+        isTicking = true;
+      }
+    });
     // --- CARREGAR E SALVAR DADOS NO LOCALSTORAGE ---
     function loadStorageData() {
       const savedReceber = localStorage.getItem('app_oradores_receber');
@@ -927,12 +954,10 @@ viewport.addEventListener('scroll', () => {
       localStorage.setItem('app_oradores_speakers', JSON.stringify(registeredSpeakers));
     }
 
-    // --- NAVEGAÇÃO DE MESES SINCRONIZADA ---
-function changeMonth(offset, page) {
-  // Altera o mês na data única compartilhada pelas duas abas
-  currentDate.setMonth(currentDate.getMonth() + offset);
-  render();
-}
+    function changeMonth(offset, page) {
+      currentDate.setMonth(currentDate.getMonth() + offset);
+      render();
+    }
 
     function formatMonthYear(date) {
       const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -945,32 +970,26 @@ function changeMonth(offset, page) {
       return `${day}/${month}/${year}`;
     }
 
-    // --- RENDERIZAÇÃO DAS PÁGINAS ---
     function atualizarSugestoesOradores() {
-  const datalist = document.getElementById('datalist-oradores');
-  if (!datalist) return;
-  datalist.innerHTML = registeredSpeakers.map(sp => `<option value="${sp.name}">`).join('');
-}
+      const datalist = document.getElementById('datalist-oradores');
+      if (!datalist) return;
+      datalist.innerHTML = registeredSpeakers.map(sp => `<option value="${sp.name}">`).join('');
+    }
 
-// --- RENDERIZAÇÃO DAS PÁGINAS ---
-function render() {
-  atualizarSugestoesOradores();
+    function render() {
+      atualizarSugestoesOradores();
 
-  // O mês exibido e filtrado será o mesmo para "Enviar" e "Receber"
-  const mesFormatado = formatMonthYear(currentDate);
-  const yearMonthKey = getYearMonthKey(currentDate);
+      const mesFormatado = formatMonthYear(currentDate);
+      const yearMonthKey = getYearMonthKey(currentDate);
 
-  // Página 1: Enviar
-  document.getElementById('month-display-enviar').innerText = mesFormatado;
-  renderScheduleList('list-enviar', scheduleEnviar.filter(item => item.date.startsWith(yearMonthKey)));
+      document.getElementById('month-display-enviar').innerText = mesFormatado;
+      renderScheduleList('list-enviar', scheduleEnviar.filter(item => item.date.startsWith(yearMonthKey)));
 
-  // Página 2: Receber
-  document.getElementById('month-display-receber').innerText = mesFormatado;
-  renderScheduleList('list-receber', scheduleReceber.filter(item => item.date.startsWith(yearMonthKey)));
+      document.getElementById('month-display-receber').innerText = mesFormatado;
+      renderScheduleList('list-receber', scheduleReceber.filter(item => item.date.startsWith(yearMonthKey)));
 
-  // Página 3: Oradores
-  renderSpeakersList();
-}
+      renderSpeakersList();
+    }
 
     function renderScheduleList(containerId, items) {
       const container = document.getElementById(containerId);
@@ -1022,7 +1041,6 @@ function render() {
       `).join('');
     }
 
-    // --- MANIPULAÇÃO DE MODAIS E FORMULÁRIOS ---
     function openAddModal() {
       if (currentPageIndex === 2) {
         document.getElementById('modal-speaker-title').innerText = 'Cadastrar Orador Local';
@@ -1075,49 +1093,46 @@ function render() {
       document.getElementById('modal-backup').classList.remove('active');
     }
 
-    // --- SALVAR AGENDAMENTO E ATUALIZAR DATA DO ORADOR ---
-function handleSaveSchedule(e) {
-  e.preventDefault();
-  const idInput = document.getElementById('schedule-id').value;
-  const activeList = (currentPageIndex === 0) ? scheduleEnviar : scheduleReceber;
+    function handleSaveSchedule(e) {
+      e.preventDefault();
+      const idInput = document.getElementById('schedule-id').value;
+      const activeList = (currentPageIndex === 0) ? scheduleEnviar : scheduleReceber;
 
-  const date = document.getElementById('field-date').value;
-  const congregation = document.getElementById('field-congregation').value;
-  const name = document.getElementById('field-name').value.trim();
-  const number = document.getElementById('field-number').value;
-  const theme = document.getElementById('field-theme').value;
+      const date = document.getElementById('field-date').value;
+      const congregation = document.getElementById('field-congregation').value;
+      const name = document.getElementById('field-name').value.trim();
+      const number = document.getElementById('field-number').value;
+      const theme = document.getElementById('field-theme').value;
 
-  if (idInput) {
-    const item = activeList.find(i => Number(i.id) === Number(idInput));
-    if (item) {
-      item.date = date;
-      item.congregation = congregation;
-      item.name = name;
-      item.number = number;
-      item.theme = theme;
-    }
-  } else {
-    activeList.push({
-      id: Date.now(),
-      date, congregation, name, number, theme
-    });
-  }
-
-  // SE FOR A PÁGINA "ENVIAR" (0), ATUALIZA A DATA DO ORADOR LOCAL AUTOMATICAMENTE
-  if (currentPageIndex === 0) {
-    const oradorLocal = registeredSpeakers.find(s => s.name.toLowerCase().trim() === name.toLowerCase());
-    if (oradorLocal) {
-      // Atualiza a data do último discurso se a nova data for mais recente ou se ainda não houver data
-      if (!oradorLocal.lastTalkDate || new Date(date) >= new Date(oradorLocal.lastTalkDate)) {
-        oradorLocal.lastTalkDate = date;
+      if (idInput) {
+        const item = activeList.find(i => Number(i.id) === Number(idInput));
+        if (item) {
+          item.date = date;
+          item.congregation = congregation;
+          item.name = name;
+          item.number = number;
+          item.theme = theme;
+        }
+      } else {
+        activeList.push({
+          id: Date.now(),
+          date, congregation, name, number, theme
+        });
       }
-    }
-  }
 
-  saveStorageData();
-  closeModals();
-  render();
-}
+      if (currentPageIndex === 0) {
+        const oradorLocal = registeredSpeakers.find(s => s.name.toLowerCase().trim() === name.toLowerCase());
+        if (oradorLocal) {
+          if (!oradorLocal.lastTalkDate || new Date(date) >= new Date(oradorLocal.lastTalkDate)) {
+            oradorLocal.lastTalkDate = date;
+          }
+        }
+      }
+
+      saveStorageData();
+      closeModals();
+      render();
+    }
 
     function handleSaveSpeaker(e) {
       e.preventDefault();
@@ -1162,7 +1177,6 @@ function handleSaveSchedule(e) {
       }
     }
 
-  // --- BACKUP E RESTAURAÇÃO DE DADOS ---
     function openBackupModal() {
       document.getElementById('modal-backup').classList.add('active');
     }
@@ -1175,7 +1189,6 @@ function handleSaveSchedule(e) {
         scheduleEnviar,
         registeredSpeakers
       };
-
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
       const downloadAnchor = document.createElement('a');
       const today = new Date().toISOString().slice(0, 10);
@@ -1217,7 +1230,7 @@ function handleSaveSchedule(e) {
       reader.readAsText(file);
     }
 
-    // --- LÓGICA DA PÁGINA 4 (DISCURSO PÚBLICO & GOOGLE SHEETS) ---
+    // --- LÓGICA DA PÁGINA 4 E MODAL DE AGENDAMENTO (AUTO-PREENCHIMENTO) ---
     function initDiscursoPublico() {
       const displayInput = document.getElementById('input-data-custom');
       const hiddenPicker = document.getElementById('hidden-date-picker');
@@ -1225,10 +1238,13 @@ function handleSaveSchedule(e) {
       const areaTema = document.getElementById('area-tema');
       const txEndereco = document.getElementById('textarea-endereco');
       
+      // Novos elementos para auto-preenchimento no Modal de Agendamento (Páginas 1 e 2)
+      const fieldNumber = document.getElementById('field-number');
+      const fieldTheme = document.getElementById('field-theme');
+
       const mesesSimplificados = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
       const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
-      // Seletor de Data/Hora Customizado
       displayInput.addEventListener('click', function() {
         if (typeof hiddenPicker.showPicker === 'function') hiddenPicker.showPicker();
         else hiddenPicker.focus();
@@ -1260,37 +1276,13 @@ function handleSaveSchedule(e) {
         salvarDadosPagina4();
       });
 
-      // Redimensionamento do Endereço
       function ajustarAlturaEndereco() {
         txEndereco.style.height = 'auto';
         txEndereco.style.height = txEndereco.scrollHeight + 'px';
       }
       txEndereco.addEventListener('input', ajustarAlturaEndereco);
 
-      // Busca na Planilha
-      let bancoDeTemas = {};
-      const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGAcOIMZpt2HD2XMZWqEnV5QjF7322mxVRjI-s3hsGsSzAw6T45pGhCczn0tNzQUQeYcnQ4R3SCyAS/pub?gid=1453510933&single=true&output=tsv";
-
-      async function carregarDadosPlanilha() {
-        try {
-          const resposta = await fetch(sheetUrl);
-          const tsvTexto = await resposta.text();
-          const linhas = tsvTexto.split(/\r?\n/);
-          
-          linhas.forEach(linha => {
-            const colunas = linha.split('\t');
-            if (colunas.length >= 2) {
-              const numero = colunas[0].trim();
-              const temaOriginal = colunas[1].trim();
-              if (numero && temaOriginal) bancoDeTemas[numero] = temaOriginal;
-            }
-          });
-          atualizarTemaComEsboco();
-        } catch (erro) {
-          console.error("Erro ao carregar planilha: ", erro);
-        }
-      }
-
+      // Atualizador de Tema para a Página 4
       function atualizarTemaComEsboco() {
         const numeroDigitado = inputEsboco.value.trim();
         if (numeroDigitado === "") areaTema.textContent = "•••";
@@ -1299,10 +1291,22 @@ function handleSaveSchedule(e) {
         
         localStorage.setItem('form_designacao_tema', areaTema.textContent);
       }
-
       inputEsboco.addEventListener('input', atualizarTemaComEsboco);
 
-      // Persistência de Dados da Página 4
+      // --- AUTO-PREENCHIMENTO DO MODAL (Páginas 1 e 2) ---
+      if (fieldNumber && fieldTheme) {
+        fieldNumber.addEventListener('input', function() {
+          const numDigitado = fieldNumber.value.trim();
+          if (numDigitado === "") {
+            fieldTheme.value = "";
+          } else if (bancoDeTemas[numDigitado]) {
+            fieldTheme.value = bancoDeTemas[numDigitado];
+          } else {
+            fieldTheme.value = "";
+          }
+        });
+      }
+
       const inputsSalvar = document.querySelectorAll('.input-card-save');
       
       function salvarDadosPagina4() {
@@ -1339,13 +1343,10 @@ function handleSaveSchedule(e) {
       carregarDadosPlanilha();
     }
 
-        // --- INICIALIZAÇÃO GERAL ---
     document.addEventListener('DOMContentLoaded', () => {
       loadStorageData();
       atualizarUI();
       initDiscursoPublico();
-      
-      // ✅ ADICIONE ESTA LINHA: Desenha os dados na tela logo na abertura
       render();
 
       setTimeout(() => {
@@ -1353,8 +1354,6 @@ function handleSaveSchedule(e) {
       }, 50);
     });
 
-
-    // Registra Service Worker PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
