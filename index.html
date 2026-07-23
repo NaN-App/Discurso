@@ -86,7 +86,7 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      transition: background 0.2s;
+      transition: background 0.4s;
       font-weight: 600;
     }
 
@@ -162,7 +162,7 @@
   cursor: pointer;
   border-radius: 12px 12px 0 0;
   text-align: center;
-  transition: color 0.0s linear;
+  transition: color 0.4s ease;
   white-space: nowrap;
   position: relative;
   z-index: 2;
@@ -1086,7 +1086,7 @@
             <div class="card-subtitle">Último discurso: <strong>${formatDateBR(sp.lastTalkDate)}</strong></div>
             <div class="outlines-badge">Esboços: ${sp.outlines || 'Nenhum'}</div>
           </div>
-          <button class="btn-delete" onclick="event.stopPropagation(); deleteSpeaker(${sp.id})">✕</button>
+          <button class="btn-delete" onclick="event.stopPropagation(); deleteSpeaker(${sp.id})">•</button>
         </div>
       `).join('');
     }
