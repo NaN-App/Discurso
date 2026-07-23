@@ -162,7 +162,7 @@
   cursor: pointer;
   border-radius: 12px 12px 0 0;
   text-align: center;
-  transition: color 0.1s ease;
+  transition: color 0.0s linear;
   white-space: nowrap;
   position: relative;
   z-index: 2;
@@ -259,7 +259,7 @@
       align-items: center;
       border-left: 5px solid var(--primary-accent);
       margin-bottom: 4px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
     }
 
@@ -326,11 +326,11 @@
       border: none;
       color: #444444;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       padding: 8px 8px;
       letter-spacing: 0.1px;
       position: absolute;
-      top: -2px;   /* Distância do topo do card */
+      top: 4px;   /* Distância do topo do card */
       right: 8px; /* Distância da borda direita */
     }
 
@@ -433,6 +433,11 @@
 
     .modal.active {
       display: flex;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    
+    .modal.active .modal-body {
+      animation: slideUp 0.4s ease forwards;
     }
 
     .modal-body {
@@ -445,6 +450,26 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       max-width: 450px;
       margin: 15px auto;
+    }
+    
+    /* --- REGRAS DAS ANIMAÇÕES --- */
+
+    /* Animação para o fundo escuro aparecer suavemente */
+    @keyframes fadeIn {
+     from { opacity: 0; }
+     to { opacity: 1; }
+   }
+
+   /* Animação para o modal subir e aparecer */
+   @keyframes slideUp {
+     from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95); /* Começa levemente menor e abaixo */
+  }
+    to {
+    opacity: 1;
+    transform: translateY(0) scale(1); /* Chega na posição original */
+      }
     }
 
     .modal-header {
@@ -698,22 +723,21 @@
       <form id="form-schedule" onsubmit="handleSaveSchedule(event)">
         <input type="hidden" id="schedule-id">
 
+      <!-- 1. Nome do Orador e Congregação -->
+       <div style="display: flex; gap: 8px;">  
+        <div class="form-group">
+        <label>Nome do Orador</label>
+         <input type="text" id="field-name" class="form-control" list="datalist-oradores" placeholder="  •••" autocomplete="off" required>
+         <datalist id="datalist-oradores"></datalist>
+          </div>
        
-       <div style="display: flex; gap: 8px;">
-        <!-- 1. Nome do Orador -->
-<div class="form-group">
-  <label>Nome do Orador</label>
-  <input type="text" id="field-name" class="form-control" list="datalist-oradores" placeholder="  •••" autocomplete="off" required>
-  <datalist id="datalist-oradores"></datalist>
-</div>
-        <!-- 2. Congregação -->
         <div class="form-group">
           <label>Congregação</label>
           <input type="text" id="field-congregation" class="form-control" placeholder="  •••" required>
         </div>
         </div>
 
-        <!-- 3. Data e Número do Esboço Lado a Lado -->
+        <!-- 3. Data e Número-->
         <div style="display: flex; gap: 8px;">
           <div class="form-group" style="flex: 1;">
             <label>Data</label>
@@ -747,20 +771,28 @@
       <form id="form-speaker" onsubmit="handleSaveSpeaker(event)">
         <input type="hidden" id="speaker-id">
         
+   <div style="display: flex; gap: 8px;">
+       
+       
+  <!-- ORADORES - NOME E DATA (LADO A LADO)-->
+  
         <div class="form-group">
           <label>Nome Completo</label>
-          <input type="text" id="speaker-name" class="form-control" placeholder="Ex: João Batista" required>
+          <input type="text" id="speaker-name" class="form-control" placeholder="   •••" required>
         </div>
 
-        <div class="form-group">
-          <label>Esboços Preparados (separados por vírgula)</label>
-          <input type="text" id="speaker-outlines" class="form-control" placeholder="Ex: 1, 15, 58, 175">
-        </div>
-
-        <div class="form-group">
-          <label>Data do Último Discurso</label>
+        <div class="form-group" style="flex: 1;">
+          <label>Último Discurso</label>
           <input type="date" id="speaker-last-date" class="form-control">
         </div>
+        </div>
+             
+        <div class="form-group">
+          <label>Esboços Preparados</label>
+          <input type="text" id="speaker-outlines" class="form-control" placeholder="Ex: 1, 15, 58, 175">
+        </div>
+       
+        
 
         <button type="submit" class="btn-submit">Salvar Orador</button>
       </form>
@@ -1026,7 +1058,7 @@
               <div class="card-extra">Congregação: ${item.congregation}</div>
               <div class="card-subtitle"> ${item.theme} (${item.number})</div>
               </div>
-            <button class="btn-delete" onclick="event.stopPropagation(); deleteSchedule(${item.id})">•••</button>
+            <button class="btn-delete" onclick="event.stopPropagation(); deleteSchedule(${item.id})">✕</button>
           </div>
         `;
       }).join('');
@@ -1054,7 +1086,7 @@
             <div class="card-subtitle">Último discurso: <strong>${formatDateBR(sp.lastTalkDate)}</strong></div>
             <div class="outlines-badge">Esboços: ${sp.outlines || 'Nenhum'}</div>
           </div>
-          <button class="btn-delete" onclick="event.stopPropagation(); deleteSpeaker(${sp.id})">•••</button>
+          <button class="btn-delete" onclick="event.stopPropagation(); deleteSpeaker(${sp.id})">✕</button>
         </div>
       `).join('');
     }
