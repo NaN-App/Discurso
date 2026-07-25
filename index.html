@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#690809">
+  <meta name="theme-color" content="#111111">
   <meta name="description" content="Gestão e Designação de Oradores Públicos">
   <title>Gestão de Oradores Públicos</title>
 
@@ -19,10 +19,10 @@
   <style>
     :root {
       --bg-main: #EEEEEE;
-      --bg-header: #690809;
-      --primary-accent: #690809;
+      --bg-header: #111111;
+      --primary-accent: #333333;
       --text-light: #FFFFFF; 
-      --text-muted: #df4e62;
+      --text-muted: #991810;
       --card-white: #FFFFFF;
       --text-dark: #141416;
       --border-discurso: #2F6c82;
@@ -80,7 +80,7 @@
       border: none;
       color: white;
       font-size: 14px;
-      padding: 6px 6px;
+      padding: 6px 10px;
       border-radius: 10px;
       cursor: pointer;
       display: flex;
@@ -353,7 +353,7 @@
     }
 
     .funcao-titulo {
-      font-size: 19px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--bg-header);
       display: flex;
@@ -441,6 +441,16 @@
       animation: slideUp 0.4s ease forwards;
     }
 
+    /* --- REGRAS DE FECHAMENTO COM ANIMAÇÃO --- */
+    .modal.closing {
+      display: flex;
+      animation: fadeOut 0.4s ease forwards;
+    }
+
+    .modal.closing .modal-body {
+      animation: slideDown 0.4s ease forwards;
+    }
+
     .modal-body {
       background: white;
       width: 95%;
@@ -455,23 +465,39 @@
     
     /* --- REGRAS DAS ANIMAÇÕES --- */
 
-    /* Animação para o fundo escuro aparecer suavemente */
+    /* Animações de Entrada */
     @keyframes fadeIn {
      from { opacity: 0; }
      to { opacity: 1; }
    }
 
-   /* Animação para o modal subir e aparecer */
    @keyframes slideUp {
      from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95); /* Começa levemente menor e abaixo */
-  }
-    to {
-    opacity: 1;
-    transform: translateY(0) scale(1); /* Chega na posição original */
-      }
-    }
+       opacity: 0;
+       transform: translateY(20px) scale(0.95);
+     }
+     to {
+       opacity: 1;
+       transform: translateY(0) scale(1);
+     }
+   }
+
+   /* Animações de Saída (Mesmo ritmo e transição) */
+   @keyframes fadeOut {
+     from { opacity: 1; }
+     to { opacity: 0; }
+   }
+
+   @keyframes slideDown {
+     from {
+       opacity: 1;
+       transform: translateY(0) scale(1);
+     }
+     to {
+       opacity: 0;
+       transform: translateY(20px) scale(0.95);
+     }
+   }
 
     .modal-header {
       display: flex;
@@ -532,7 +558,7 @@
       background: #f8fafc;
       border: 1px dashed #cbd5e1;
       padding: 14px;
-      border-radius: 10px;
+      border-radius: 20px;
       margin-bottom: 12px;
       text-align: center;
     }
@@ -544,11 +570,11 @@
     }
 
     .btn-secondary {
-      background: #0D9490;
+      background: #333333;
       color: white;
       border: none;
       padding: 8px 14px;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
@@ -563,7 +589,7 @@
      .input-padrao, 
         input[type="date"], 
         input[type="number"] {
-        box-sizing: border-box; /* Garante que padding e borda sejam contabilizados dentro da altura total */
+        box-sizing: border-box; /* Garante que padding e borda Sejam contabilizados dentro da altura total */
         height: 42px;           /* Define uma altura fixa idêntica para ambos */
        padding: 8px 12px;      /* Mantém o espaçamento interno igual */
        vertical-align: middle;
@@ -729,8 +755,8 @@
   <input type="datetime-local" id="hidden-date-picker" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;">
 
     <!-- MODAL DE AGENDAMENTO (PÁGINAS 1 E 2) -->
-  <div class="modal" id="modal-schedule">
-    <div class="modal-body">
+  <div class="modal" id="modal-schedule" onclick="closeModals()">
+    <div class="modal-body" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h3 id="modal-schedule-title">Agendar Orador</h3>
         <button onclick="closeModals()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
@@ -770,15 +796,15 @@
           <input type="text" id="field-theme" class="form-control" placeholder="  •••" required>
         </div>
 
-        <button type="submit" class="btn-submit">Salvar Agendamento</button>
+        <button type="submit" class="btn-submit">Registrar</button>
       </form>
     </div>
   </div>
 
 
   <!-- MODAL DE ORADOR LOCAL (PÁGINA 3) -->
-  <div class="modal" id="modal-speaker">
-    <div class="modal-body">
+  <div class="modal" id="modal-speaker" onclick="closeModals()">
+    <div class="modal-body" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h3 id="modal-speaker-title">Cadastrar Orador Local</h3>
         <button onclick="closeModals()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
@@ -809,28 +835,28 @@
        
         
 
-        <button type="submit" class="btn-submit">Salvar Orador</button>
+        <button type="submit" class="btn-submit">Registrar</button>
       </form>
     </div>
   </div>
-
-  <!-- MODAL DE BACKUP E RESTAURAÇÃO -->
-  <div class="modal" id="modal-backup">
-    <div class="modal-body">
+  
+   <!-- MODAL DE BACKUP E RESTAURAÇÃO -->
+  <div class="modal" id="modal-backup" onclick="closeModals()">
+    <div class="modal-body" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h3>Backup e Restauração</h3>
         <button onclick="closeModals()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
       </div>
 
       <div class="backup-option">
-        <p><strong>1. Salvar Backup (Baixar Arquivo)</strong><br>Gera um arquivo de segurança que você pode salvar no Google Drive ou WhatsApp.</p>
-        <button class="btn-secondary" onclick="exportBackupJSON()">📥 Baixar Backup JSON</button>
+        <p><strong>1. Salvar Backup</strong><br>Salva um arquivo na memória do dispositivo.</p>
+        <button class="btn-secondary" onclick="exportBackupJSON()">📥 Salvar Arquivo</button>
       </div>
 
       <div class="backup-option">
         <p><strong>2. Restaurar Dados</strong><br>Selecione um arquivo de backup (.json) para restaurar suas informações.</p>
         <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="importBackupJSON(event)">
-        <button class="btn-secondary" onclick="document.getElementById('import-file-input').click()">📤 Carregar Arquivo JSON</button>
+        <button class="btn-secondary" onclick="document.getElementById('import-file-input').click()">📤 Carregar Arquivo</button>
       </div>
     </div>
   </div>
@@ -1078,7 +1104,6 @@
         `;
       }).join('');
     }
-
     function renderSpeakersList() {
       const container = document.getElementById('list-oradores');
       
@@ -1106,18 +1131,24 @@
       `).join('');
     }
 
+    function openModalElement(modal) {
+      if (!modal) return;
+      modal.classList.remove('closing');
+      modal.classList.add('active');
+    }
+
     function openAddModal() {
       if (currentPageIndex === 2) {
         document.getElementById('modal-speaker-title').innerText = 'Cadastrar Orador Local';
         document.getElementById('speaker-id').value = '';
         document.getElementById('form-speaker').reset();
-        document.getElementById('modal-speaker').classList.add('active');
+        openModalElement(document.getElementById('modal-speaker'));
       } else {
         document.getElementById('modal-schedule-title').innerText = 
           currentPageIndex === 0 ? 'Enviar' : 'Receber';
         document.getElementById('schedule-id').value = '';
         document.getElementById('form-schedule').reset();
-        document.getElementById('modal-schedule').classList.add('active');
+        openModalElement(document.getElementById('modal-schedule'));
       }
     }
 
@@ -1136,7 +1167,7 @@
       document.getElementById('field-number').value = item.number;
       document.getElementById('field-theme').value = item.theme;
 
-      document.getElementById('modal-schedule').classList.add('active');
+      openModalElement(document.getElementById('modal-schedule'));
     }
 
     function openEditSpeakerModal(id) {
@@ -1149,13 +1180,18 @@
       document.getElementById('speaker-outlines').value = speaker.outlines || '';
       document.getElementById('speaker-last-date').value = speaker.lastTalkDate || '';
 
-      document.getElementById('modal-speaker').classList.add('active');
+      openModalElement(document.getElementById('modal-speaker'));
     }
 
     function closeModals() {
-      document.getElementById('modal-schedule').classList.remove('active');
-      document.getElementById('modal-speaker').classList.remove('active');
-      document.getElementById('modal-backup').classList.remove('active');
+      const activeModals = document.querySelectorAll('.modal.active');
+      activeModals.forEach(modal => {
+        if (modal.classList.contains('closing')) return;
+        modal.classList.add('closing');
+        setTimeout(() => {
+          modal.classList.remove('active', 'closing');
+        }, 380); // Sincronizado com a duração da animação (0.4s)
+      });
     }
 
     function handleSaveSchedule(e) {
@@ -1243,7 +1279,7 @@
     }
 
     function openBackupModal() {
-      document.getElementById('modal-backup').classList.add('active');
+      openModalElement(document.getElementById('modal-backup'));
     }
 
     function exportBackupJSON() {
