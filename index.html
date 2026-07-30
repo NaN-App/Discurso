@@ -594,20 +594,11 @@
        padding: 8px 12px;      /* Mantém o espaçamento interno igual */
        vertical-align: middle;
 }
-   
 
   </style>
 
-  <!-- OneSignal Push SDK -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "9e1ba5be-58e8-414e-be13-fc6b2b3e1fa",
-        notifyButton: { enable: true },
-      });
-    });
+
+    
   </script>
 </head>
 <body>
@@ -768,7 +759,7 @@
        <div style="display: flex; gap: 8px;">  
         <div class="form-group">
         <label>Nome do Orador</label>
-         <input type="text" id="field-name" class="form-control" list="datalist-oradores" placeholder="  •••" autocomplete="off" required>
+         <input type="text" id="field-name" class="form-control" placeholder="  •••" autocomplete="off" required>
          <datalist id="datalist-oradores"></datalist>
           </div>
        
@@ -1089,6 +1080,7 @@
         return;
       }
 
+items.sort((a, b) => a.date.localeCompare(b.date));
       container.innerHTML = items.map(item => {
         const day = item.date.split('-')[2];
         return `
@@ -1229,7 +1221,7 @@
           }
         }
       }
-
+      
       saveStorageData();
       closeModals();
       render();
