@@ -1,4 +1,4 @@
-const CACHE_NAME = 'discurso-app-v2.4';
+const CACHE_NAME = 'discurso-app-v3.4';
 const ASSETS = [
   './',
   './index.html',
